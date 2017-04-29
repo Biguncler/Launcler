@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorTabAppName">#ffffff</color>
+
+    <!--毛玻璃上的tint颜色-->
+    <color name="color_bg_click_normal">#11000000</color>
+    <!--按钮press时的颜色-->
+    <color name="color_bg_click_press">#33000000</color>
+    <!--自定义软件盘上字母的颜色-->
+    <color name="color_text_input_method">#ffffffff</color>
+
+
+
+    <!--全局的点击时的颜色-->
+    <color name="color_press">#ff00ff00</color>
+
+
+    <!--LightTheme-->
+    <!--毛玻璃上的tint颜色-->
+    <color name="color_light_theme_tint">#33ffffff</color>
+    <!--按钮press时的颜色-->
+    <color name="color_light_theme_press">#55ffffff</color>
+    <!--字体颜色-->
+    <color name="color_light_theme_text">#ffffffff</color>
+    <color name="color_light_theme_text_hint">#ffffffff</color>
+
+
+    <!--DarkTheme-->
+    <!--毛玻璃上的tint颜色-->
+    <color name="color_dark_theme_tint">#11000000</color>
+    <!--按钮press时的颜色-->
+    <color name="color_dark_theme_press">#33000000</color>
+    <!--字体颜色-->
+    <color name="color_dark_theme_text">#ff000000</color>
+    <color name="color_dark_theme_text_hint">#ff000000</color>
+
+
+    <!--状态栏背景颜色-->M
+    <color name="color_dark_theme_status_bar_bg">#55000000</color>
+    <color name="color_light_theme_status_bar_bg">#55ffffff</color>
+
+
+
+
+
+
+    <color name="color_tint_red_light">#ff2121</color>
+    <color name="color_tint_red_dark">#be002f</color>
+
+    <color name="color_tint_yellow_dark">#9b4400</color>
+    <color name="color_tint_yellow_light">#ff7500</color>
+
+    <color name="color_tint_green_dark">#00bc12</color>
+    <color name="color_tint_green_light">#00e09e</color>
+
+    <color name="color_tint_blue_dark">#003472</color>
+    <color name="color_tint_blue_light">#426666</color>
+</resources>

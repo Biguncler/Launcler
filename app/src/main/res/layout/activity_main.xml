@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.biguncler.launcher.activity.MainActivity">
+<com.example.biguncler.launcher.view.WaveLinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <ImageView
+        android:id="@+id/view_iv_status_bar"
+        android:layout_width="match_parent"
+        android:layout_height="22dp" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        >
+        <ImageView
+            android:id="@+id/view_iv_blur_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <LinearLayout
+            android:id="@+id/layout_ll_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <Button
+            android:id="@+id/view_bt_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/text_size_search_bar"
+            android:hint="Baidu Search"
+            android:paddingLeft="10dp"
+            android:background="?attr/selectableItemBackground"
+            android:maxLines="1"
+                />
+        </LinearLayout>
+    </FrameLayout>
+
+    <com.example.biguncler.launcher.view.GestureLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+
+            <com.example.biguncler.launcher.view.WaveView
+                android:id="@+id/view_wv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                />
+        </FrameLayout>
+
+    </com.example.biguncler.launcher.view.GestureLayout>
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="85dp"
+        >
+        <ImageView
+        android:id="@+id/view_iv_blur_tab"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+            />
+        <com.example.biguncler.launcher.view.AppTabLayout
+            android:id="@+id/layout_ll_tab"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+        </com.example.biguncler.launcher.view.AppTabLayout>
+
+    </FrameLayout>
+</com.example.biguncler.launcher.view.WaveLinearLayout>
+
+
+</FrameLayout>

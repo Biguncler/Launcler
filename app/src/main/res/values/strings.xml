@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Launcher</string>
+    <string name="app_name_phone">Phone</string>
+    <string name="app_name_message">Message</string>
+    <string name="app_name_apps">Applications</string>
+    <string name="app_name_browser">Browser</string>
+    <string name="app_name_camera">Camera</string>
+    <string name="tab_app_string">com.android.contacts/com.android.mms/com.android.chrome/com.android.camera/com.android.browser/com.microsoft.cortana</string>
+    <string name="tab_app_phone">com.android.contacts</string>
+    <string name="tab_app_message">com.android.mms</string>
+    <string name="tab_app_camera">com.android.camera</string>
+    <string name="tab_app_browser">com.android.browser</string>
+    <string name="tab_app_chrome">com.android.chrome</string>
+    <string name="tab_app_cortana">com.microsoft.cortana</string>
+    <string name="baidu_search">com.baidu.searchbox</string>
+</resources>

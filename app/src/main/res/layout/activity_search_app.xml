@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_search_app"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.biguncler.launcher.activity.SearchAppActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="22dp"
+        >
+        <ImageView
+            android:id="@+id/view_iv_blur_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <LinearLayout
+            android:id="@+id/layout_ll_app"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/view_bt_search_app"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center_vertical"
+            android:hint="SPOTLIGHT SEARCH"
+            android:textSize="@dimen/text_size_search_bar"
+            android:textColorHint="@android:color/white"
+            android:textColor="@android:color/white"
+            android:paddingLeft="10dp"
+            android:singleLine="true" />
+        </LinearLayout>
+
+    </FrameLayout>
+
+
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="93dp"
+        android:layout_marginTop="2dp"
+        >
+        <ImageView
+            android:id="@+id/view_iv_blur_center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <GridView
+            android:id="@+id/view_gv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/color_bg_click_normal"
+            android:scrollbars="none"
+            android:paddingTop="5dp"
+            android:numColumns="4">
+
+        </GridView>
+    </FrameLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        />
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        >
+        <ImageView
+            android:id="@+id/view_iv_blur_input_method"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <com.example.biguncler.launcher.view.InputMethodLayout
+            android:id="@+id/layout_ll_input_method"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/color_bg_click_normal">
+
+        </com.example.biguncler.launcher.view.InputMethodLayout>
+    </FrameLayout>
+</LinearLayout>

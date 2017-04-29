@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="tab_app_array">
+        <item>com.android.contacts</item>　
+        <item>com.android.mms</item>　
+        <item>com.android.chrome</item>　　
+        <item>com.android.camera</item>
+        <item>com.android.browser</item>
+        <item>com.microsoft.cortana</item>
+    </string-array>
+</resources>
