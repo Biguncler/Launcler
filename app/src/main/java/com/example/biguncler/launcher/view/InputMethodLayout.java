@@ -279,52 +279,52 @@ public class InputMethodLayout extends LinearLayout  implements View.OnClickList
     @Override
     public boolean onLongClick(View view) {
         String text= (String) ((Button)view).getText();
-        if(text.equals("A")){
-            AppUtil.luanchApp(context,MyApplication.appMap.get("WDJ"));
+        String appName="";if(text.equals("A")){
+            AppUtil.luanchApp(context,MyApplication.appMap.get("WDJ"),view);
         }else if(text.equals("B")){
-            AppUtil.luanchApp(context,MyApplication.appMap.get("ABZ"));
+            AppUtil.luanchApp(context,MyApplication.appMap.get("ABZ"),view);
         }else if(text.equals("C")){
-            AppUtil.luanchApp(context,MyApplication.appMap.get("CLOCK"));
+            AppUtil.luanchApp(context,MyApplication.appMap.get("CLOCK"),view);
         }else if(text.equals("D")){
 
         }else if(text.equals("E")){
 
         }else if(text.equals("F")){
-            AppUtil.luanchApp(context,MyApplication.appMap.get("QTFM"));
+            AppUtil.luanchApp(context,MyApplication.appMap.get("QTFM"),view);
         }else if(text.equals("G")){
-            AppUtil.luanchApp(context,MyApplication.appMap.get("GALLERY"));
+            AppUtil.luanchApp(context,MyApplication.appMap.get("GALLERY"),view);
         }else if(text.equals("H")){
 
         }else if(text.equals("I")){
-            AppUtil.luanchApp(context,MyApplication.appMap.get("ITZJ"));
+            AppUtil.luanchApp(context,MyApplication.appMap.get("ITZJ"),view);
         }else if(text.equals("J")){
 
         }else if(text.equals("K")){
-            AppUtil.luanchApp(context,MyApplication.appMap.get("KMK"));
+            AppUtil.luanchApp(context,MyApplication.appMap.get("KMK"),view);
         }else if(text.equals("L")){
 
         }else if(text.equals("M")){
-            AppUtil.luanchApp(context,MyApplication.appMap.get("AMAP"));
+            AppUtil.luanchApp(context,MyApplication.appMap.get("AMAP"),view);
         }else if(text.equals("N")){
-            AppUtil.luanchApp(context,MyApplication.appMap.get("IFENG_NEWS"));
+            AppUtil.luanchApp(context,MyApplication.appMap.get("IFENG_NEWS"),view);
         }else if(text.equals("O")){
 
         }else if(text.equals("P")){
-            AppUtil.luanchApp(context,MyApplication.appMap.get("ALIPAY"));
+            AppUtil.luanchApp(context,MyApplication.appMap.get("ALIPAY"),view);
         }else if(text.equals("Q")){
-            AppUtil.luanchApp(context,MyApplication.appMap.get("QQ"));
+            AppUtil.luanchApp(context,MyApplication.appMap.get("QQ"),view);
         }else if(text.equals("R")){
 
         }else if(text.equals("S")){
-            AppUtil.luanchApp(context,MyApplication.appMap.get("SETTINGS"));
+            AppUtil.luanchApp(context,MyApplication.appMap.get("SETTINGS"),view);
         }else if(text.equals("T")){
-            AppUtil.luanchApp(context,MyApplication.appMap.get("SJTB"));
+            AppUtil.luanchApp(context,MyApplication.appMap.get("SJTB"),view);
         }else if(text.equals("U")){
 
         }else if(text.equals("V")){
 
         }else if(text.equals("W")){
-            AppUtil.luanchApp(context,MyApplication.appMap.get("WECHAT"));
+            AppUtil.luanchApp(context,MyApplication.appMap.get("WECHAT"),view);
         }else if(text.equals("X")){
 
         }else if(text.equals("Y")){
@@ -332,7 +332,6 @@ public class InputMethodLayout extends LinearLayout  implements View.OnClickList
         }else if(text.equals("Z")){
 
         }
-        ((Activity)context).overridePendingTransition(new ScaleAnimationMap(context).getScaleAnimationId(view),0);
         return true;
     }
 

@@ -81,11 +81,9 @@ public class AppTabLayout extends LinearLayout {
                     context.startActivity(intent);
                     ((Activity)context).overridePendingTransition(new ScaleAnimationMap(context).getScaleAnimationId(view),0);
                 }else{
-                    boolean result = AppUtil.luanchApp(context, pk);
+                    boolean result = AppUtil.luanchApp(context, pk,view);
                     if (!result) {
                         Toast.makeText(context, "启动失败", Toast.LENGTH_SHORT).show();
-                    }else{
-                        ((Activity)context).overridePendingTransition(new ScaleAnimationMap(context).getScaleAnimationId(view),0);
                     }
                 }
             }

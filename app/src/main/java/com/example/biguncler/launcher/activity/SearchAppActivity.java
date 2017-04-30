@@ -107,11 +107,9 @@ public class SearchAppActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     String pk=gridAdapter.getList().get(i).getPackageName();
-                    boolean result=AppUtil.luanchApp(SearchAppActivity.this,pk);
+                    boolean result=AppUtil.luanchApp(SearchAppActivity.this,pk,view);
                     if(!result){
                         Toast.makeText(SearchAppActivity.this,"启动失败",Toast.LENGTH_SHORT).show();;
-                    }else{
-                        SearchAppActivity.this.overridePendingTransition(new ScaleAnimationMap(SearchAppActivity.this).getScaleAnimationId(view),0);
                     }
             }
         });
@@ -120,7 +118,7 @@ public class SearchAppActivity extends BaseActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String pk=gridAdapter.getList().get(i).getPackageName();
-                boolean result=AppUtil.uninstallApp(SearchAppActivity.this,pk);
+                boolean result=AppUtil.uninstallApp(SearchAppActivity.this,pk,view);
                 return true;
             }
         });
@@ -142,11 +140,9 @@ public class SearchAppActivity extends BaseActivity {
             public void onGOClickListener() {
                 if(TextUtils.isEmpty(layoutInput.getText())) return;
                 if(gridAdapter.getList().size()>0){
-                    boolean result=AppUtil.luanchApp(SearchAppActivity.this,gridAdapter.getList().get(0).getPackageName());
+                    boolean result=AppUtil.luanchApp(SearchAppActivity.this,gridAdapter.getList().get(0).getPackageName(),gridView.getChildAt(0));
                     if(!result){
                         Toast.makeText(SearchAppActivity.this,"启动失败",Toast.LENGTH_SHORT).show();;
-                    }else{
-                        SearchAppActivity.this.overridePendingTransition(new ScaleAnimationMap(SearchAppActivity.this).getScaleAnimationId(gridView.getChildAt(0)),0);
                     }
                 }
             }

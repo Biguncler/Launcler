@@ -113,12 +113,9 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 // 启动百度搜索
-                boolean result = AppUtil.luanchApp(MainActivity.this, MainActivity.this.getString(R.string.baidu_search));
+                boolean result = AppUtil.luanchApp(MainActivity.this, MainActivity.this.getString(R.string.baidu_search),view);
                 if (!result) {
                     Toast.makeText(MainActivity.this, "App is not installed", Toast.LENGTH_SHORT).show();
-                }else{
-                    MainActivity.this.overridePendingTransition(new ScaleAnimationMap(MainActivity.this).getScaleAnimationId(view),0);
-
                 }
             }
         });

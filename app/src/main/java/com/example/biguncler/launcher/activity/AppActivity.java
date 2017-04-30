@@ -107,11 +107,9 @@ public class AppActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String pk = gridAdapter.getList().get(i).getPackageName();
-                boolean result = AppUtil.luanchApp(AppActivity.this, pk);
+                boolean result = AppUtil.luanchApp(AppActivity.this, pk,view);
                 if (!result) {
                     Toast.makeText(AppActivity.this, "启动失败", Toast.LENGTH_SHORT).show();
-                }else{
-                    overridePendingTransition(new ScaleAnimationMap(AppActivity.this).getScaleAnimationId(view),0);
                 }
             }
         });
@@ -120,7 +118,7 @@ public class AppActivity extends BaseActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String pk = gridAdapter.getList().get(i).getPackageName();
-                boolean result = AppUtil.uninstallApp(AppActivity.this, pk);
+                boolean result = AppUtil.uninstallApp(AppActivity.this, pk,view);
                 return true;
             }
         });
