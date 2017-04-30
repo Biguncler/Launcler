@@ -10,9 +10,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.ScaleAnimation;
 import android.widget.LinearLayout;
 
 import com.example.biguncler.launcher.R;
@@ -170,7 +167,7 @@ public class GestureLayout extends LinearLayout {
             if(result.equals("true")){
                 Intent intent=new Intent(context, AppActivity.class);
                 context.startActivity(intent);
-                ((Activity)context).overridePendingTransition(R.anim.text_1,R.anim.text_2);
+                ((Activity)context).overridePendingTransition(R.anim.slid_up_in,0);
                 startVibrate();
             }
         }
@@ -179,7 +176,7 @@ public class GestureLayout extends LinearLayout {
         private void doDown(){
                 Intent intent=new Intent(context, SearchAppActivity.class);
                 context.startActivity(intent);
-                ((Activity)context).overridePendingTransition(R.anim.text_3,R.anim.text_4);
+                ((Activity)context).overridePendingTransition(R.anim.slide_down_in,0);
                 startVibrate();
         }
 

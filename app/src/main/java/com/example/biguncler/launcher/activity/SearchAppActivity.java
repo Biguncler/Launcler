@@ -1,25 +1,14 @@
 package com.example.biguncler.launcher.activity;
 
-import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,15 +19,11 @@ import com.example.biguncler.launcher.adapter.GridAdapter;
 import com.example.biguncler.launcher.application.MyApplication;
 import com.example.biguncler.launcher.biz.AppManager;
 import com.example.biguncler.launcher.biz.BitmapManager;
-import com.example.biguncler.launcher.biz.ScaleAnimationMap;
 import com.example.biguncler.launcher.mode.AppMode;
 import com.example.biguncler.launcher.util.AppUtil;
-import com.example.biguncler.launcher.util.BgStyle;
 import com.example.biguncler.launcher.view.InputMethodLayout;
-import com.hp.hpl.sparta.Text;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class SearchAppActivity extends BaseActivity {
     private ImageView ivBlurSearch,ivBlurCenter,ivBlurInput;
@@ -152,7 +137,7 @@ public class SearchAppActivity extends BaseActivity {
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if(motionEvent.getAction()==MotionEvent.ACTION_UP){
                    finish();
-                    overridePendingTransition(R.anim.text_1,R.anim.text_2);
+                    overridePendingTransition(0,R.anim.slide_up_out);
                 }
                 return true;
             }
@@ -215,7 +200,7 @@ public class SearchAppActivity extends BaseActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
             finish();
-            overridePendingTransition(R.anim.text_1,R.anim.text_2);
+            overridePendingTransition(0,R.anim.slide_up_out);
             return true;
         }
         return super.onKeyDown(keyCode, event);
@@ -235,7 +220,7 @@ public class SearchAppActivity extends BaseActivity {
     protected void onPressHome() {
         super.onPressHome();
         finish();
-        overridePendingTransition(R.anim.text_1,R.anim.text_2);
+        overridePendingTransition(0,R.anim.slide_up_out);
     }
 
 
