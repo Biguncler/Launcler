@@ -49,6 +49,7 @@ public class AppActivity extends BaseActivity {
         int pivoty=ScreenUtil.getScreenHeight(this)/2;
         enterScaleAnimator(layoutCenter,"scaleY",0,1,pivotx,pivoty,400);
         enterScaleAnimator(layoutCenter,"scaleX",0,1,pivotx,pivoty,400);
+        enterScaleAnimator(btText,"scaleX",0,1,0,0,400);
     }
 
     @Override
@@ -118,8 +119,9 @@ public class AppActivity extends BaseActivity {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
             int pivotx= ScreenUtil.getScreenWidth(this)/2;
             int pivoty=ScreenUtil.getScreenHeight(this)/2;
-            exitScaleAnimator(layoutCenter,"scaleY",1,0,pivotx,pivoty,400);
-            exitScaleAnimator(layoutCenter,"scaleX",1,0,pivotx,pivoty,400);
+            exitScaleAnimatorWithFinish(layoutCenter,"scaleY",1,0,pivotx,pivoty,400);
+            exitScaleAnimatorWithFinish(layoutCenter,"scaleX",1,0,pivotx,pivoty,400);
+            exitScaleAnimator(btText,"scaleX",1,0,0,0,400);
             return true;
         }
         return super.onKeyDown(keyCode, event);
@@ -141,8 +143,9 @@ public class AppActivity extends BaseActivity {
         super.onPressHome();
         int pivotx= ScreenUtil.getScreenWidth(this)/2;
         int pivoty=ScreenUtil.getScreenHeight(this)/2;
-        exitScaleAnimator(layoutCenter,"scaleY",1,0,pivotx,pivoty,400);
-        exitScaleAnimator(layoutCenter,"scaleX",1,0,pivotx,pivoty,400);
+        exitScaleAnimatorWithFinish(layoutCenter,"scaleY",1,0,pivotx,pivoty,400);
+        exitScaleAnimatorWithFinish(layoutCenter,"scaleX",1,0,pivotx,pivoty,400);
+        exitScaleAnimator(btText,"scaleX",1,0,0,0,400);
     }
 
 
@@ -196,7 +199,7 @@ public class AppActivity extends BaseActivity {
     }
 
 
-    private void exitScaleAnimator(View target,String propertyName,float start,float end,float pivotX,float pivotY,int time){
+    private void exitScaleAnimatorWithFinish(View target,String propertyName,float start,float end,float pivotX,float pivotY,int time){
         target.setPivotX(pivotX);
         target.setPivotY(pivotY);
         ObjectAnimator animator=ObjectAnimator.ofFloat(target,propertyName,start,end);
@@ -209,6 +212,15 @@ public class AppActivity extends BaseActivity {
                 finish();
             }
         });
+        animator.start();
+    }
+
+    private void exitScaleAnimator(View target,String propertyName,float start,float end,float pivotX,float pivotY,int time){
+        target.setPivotX(pivotX);
+        target.setPivotY(pivotY);
+        ObjectAnimator animator=ObjectAnimator.ofFloat(target,propertyName,start,end);
+        animator.setDuration(time);
+        animator.setInterpolator(new AnticipateInterpolator());
         animator.start();
     }
 

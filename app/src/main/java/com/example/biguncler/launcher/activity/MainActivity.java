@@ -93,7 +93,8 @@ public class MainActivity extends BaseActivity {
         layoutBottom.postDelayed(new Runnable() {
             @Override
             public void run() {
-                enterScaleAnimator(layoutBottom,"scaleY",0,1,0,PixUtil.dip2px(MainActivity.this,85),400);
+                enterScaleAnimator(layoutBottom,"scaleY",0,1,0,PixUtil.dip2px(MainActivity.this,85),200);
+                enterScaleAnimator(btSearch,"scaleX",0,1,0,0,200);
             }
         }, 100);
     }
@@ -101,7 +102,8 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        exitScaleAnimator(layoutBottom,"scaleY",1,0,0,PixUtil.dip2px(MainActivity.this,85),400);
+        exitScaleAnimator(layoutBottom,"scaleY",1,0,0,PixUtil.dip2px(MainActivity.this,85),200);
+        exitScaleAnimator(btSearch,"scaleX",1,0,0,0,200);
     }
 
     @Override
