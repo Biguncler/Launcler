@@ -151,15 +151,9 @@ public class GestureLayout extends LinearLayout {
 
 
         private void doLeft(){
-            AppUtil.luanchApp(context, MyApplication.appMap.get("ALIPAY"));
-            ((Activity)context).overridePendingTransition(R.anim.slide_right_in,0);
-            startVibrate();
         }
 
         private void doRight(){
-            AppUtil.luanchApp(context, MyApplication.appMap.get("WECHAT"));
-            ((Activity)context).overridePendingTransition(R.anim.slide_left_in,0);
-            startVibrate();
         }
 
         private void doUp(){
@@ -167,7 +161,6 @@ public class GestureLayout extends LinearLayout {
             if(result.equals("true")){
                 Intent intent=new Intent(context, AppActivity.class);
                 context.startActivity(intent);
-                ((Activity)context).overridePendingTransition(R.anim.slid_up_in,0);
                 startVibrate();
             }
         }
@@ -176,7 +169,6 @@ public class GestureLayout extends LinearLayout {
         private void doDown(){
                 Intent intent=new Intent(context, SearchAppActivity.class);
                 context.startActivity(intent);
-                ((Activity)context).overridePendingTransition(R.anim.slide_down_in,0);
                 startVibrate();
         }
 

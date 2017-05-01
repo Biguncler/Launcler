@@ -1,12 +1,18 @@
 package com.example.biguncler.launcher.activity;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.animation.AnticipateInterpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,6 +23,7 @@ import com.example.biguncler.launcher.adapter.GridAdapter;
 import com.example.biguncler.launcher.application.MyApplication;
 import com.example.biguncler.launcher.biz.BitmapManager;
 import com.example.biguncler.launcher.util.AppUtil;
+import com.example.biguncler.launcher.util.ScreenUtil;
 
 public class AppActivity extends BaseActivity {
     private ImageView ivBlurSearch, ivBlurCenter;
@@ -24,6 +31,7 @@ public class AppActivity extends BaseActivity {
     private GridAdapter gridAdapter;
     private Button btText;
     private LinearLayout layoutApp;
+    private FrameLayout layoutCenter;
 
 
     @Override
@@ -37,7 +45,10 @@ public class AppActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
+        int pivotx= ScreenUtil.getScreenWidth(this)/2;
+        int pivoty=ScreenUtil.getScreenHeight(this)/2;
+        enterScaleAnimator(layoutCenter,"scaleY",0,1,pivotx,pivoty,400);
+        enterScaleAnimator(layoutCenter,"scaleX",0,1,pivotx,pivoty,400);
     }
 
     @Override
@@ -67,6 +78,7 @@ public class AppActivity extends BaseActivity {
         ivBlurCenter = (ImageView) findViewById(R.id.view_iv_blur_center);
         btText = (Button) findViewById(R.id.view_bt_title);
         gridView = (GridView) findViewById(R.id.view_gv);
+        layoutCenter= (FrameLayout) findViewById(R.id.layout_fl_app_center);
         gridAdapter = new GridAdapter(this, MyApplication.apps);
         gridView.setAdapter(gridAdapter);
         gridView.setSelector(new ColorDrawable(Color.TRANSPARENT));
@@ -104,8 +116,10 @@ public class AppActivity extends BaseActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
-            finish();
-            overridePendingTransition(0,R.anim.slide_down_out);
+            int pivotx= ScreenUtil.getScreenWidth(this)/2;
+            int pivoty=ScreenUtil.getScreenHeight(this)/2;
+            exitScaleAnimator(layoutCenter,"scaleY",1,0,pivotx,pivoty,400);
+            exitScaleAnimator(layoutCenter,"scaleX",1,0,pivotx,pivoty,400);
             return true;
         }
         return super.onKeyDown(keyCode, event);
@@ -125,8 +139,10 @@ public class AppActivity extends BaseActivity {
     @Override
     protected void onPressHome() {
         super.onPressHome();
-        finish();
-        overridePendingTransition(0,R.anim.slide_down_out);
+        int pivotx= ScreenUtil.getScreenWidth(this)/2;
+        int pivoty=ScreenUtil.getScreenHeight(this)/2;
+        exitScaleAnimator(layoutCenter,"scaleY",1,0,pivotx,pivoty,400);
+        exitScaleAnimator(layoutCenter,"scaleX",1,0,pivotx,pivoty,400);
     }
 
 
@@ -168,6 +184,32 @@ public class AppActivity extends BaseActivity {
     private void updateList() {
         gridAdapter.setList(MyApplication.apps);
         gridAdapter.notifyDataSetChanged();
+    }
+
+    private void enterScaleAnimator(View target,String propertyName,float start,float end,float pivotX,float pivotY,int time){
+        target.setPivotX(pivotX);
+        target.setPivotY(pivotY);
+        ObjectAnimator animator=ObjectAnimator.ofFloat(target,propertyName,start,end);
+        animator.setDuration(time);
+        animator.setInterpolator(new OvershootInterpolator());
+        animator.start();
+    }
+
+
+    private void exitScaleAnimator(View target,String propertyName,float start,float end,float pivotX,float pivotY,int time){
+        target.setPivotX(pivotX);
+        target.setPivotY(pivotY);
+        ObjectAnimator animator=ObjectAnimator.ofFloat(target,propertyName,start,end);
+        animator.setDuration(time);
+        animator.setInterpolator(new AnticipateInterpolator());
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                finish();
+            }
+        });
+        animator.start();
     }
 
 }

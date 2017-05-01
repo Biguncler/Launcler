@@ -1,5 +1,8 @@
 package com.example.biguncler.launcher.activity;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -7,8 +10,14 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AnticipateInterpolator;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,6 +30,7 @@ import com.example.biguncler.launcher.biz.AppManager;
 import com.example.biguncler.launcher.biz.BitmapManager;
 import com.example.biguncler.launcher.mode.AppMode;
 import com.example.biguncler.launcher.util.AppUtil;
+import com.example.biguncler.launcher.util.PixUtil;
 import com.example.biguncler.launcher.view.InputMethodLayout;
 
 import java.util.ArrayList;
@@ -34,6 +44,7 @@ public class SearchAppActivity extends BaseActivity {
     private GridAdapter gridAdapter;
     private AppManager appManager;
     private LinearLayout layoutApp;
+    private FrameLayout layoutCenter,layoutBottom;
 
 
     @Override
@@ -45,6 +56,13 @@ public class SearchAppActivity extends BaseActivity {
         initListener();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        enterScaleAnimator(layoutCenter,"scaleY",0,1,0,0,400);
+        enterScaleAnimator(layoutBottom,"scaleY",0,1,0, PixUtil.dip2px(this,250),400);
+
+    }
 
     @Override
     protected void onPause() {
@@ -76,6 +94,8 @@ public class SearchAppActivity extends BaseActivity {
         ivBlurCenter=(ImageView) findViewById(R.id.view_iv_blur_center);
         btText= (Button) findViewById(R.id.view_bt_search_app);
         gridView= (GridView) findViewById(R.id.view_gv);
+        layoutCenter= (FrameLayout) findViewById(R.id.layout_ll_app_seacher_center);
+        layoutBottom= (FrameLayout) findViewById(R.id.layout_fl_search_app_bottom);
         gridAdapter=new GridAdapter(this,new ArrayList<AppMode>());
         gridView.setAdapter(gridAdapter);
         gridView.setSelector(new ColorDrawable(Color.TRANSPARENT));
@@ -136,8 +156,8 @@ public class SearchAppActivity extends BaseActivity {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if(motionEvent.getAction()==MotionEvent.ACTION_UP){
-                   finish();
-                    overridePendingTransition(0,R.anim.slide_up_out);
+                    exitScaleAnimator(layoutCenter,"scaleY",1,0,0,0,400);
+                    exitScaleAnimator(layoutBottom,"scaleY",1,0,0,PixUtil.dip2px(SearchAppActivity.this,250),400);
                 }
                 return true;
             }
@@ -199,8 +219,8 @@ public class SearchAppActivity extends BaseActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
-            finish();
-            overridePendingTransition(0,R.anim.slide_up_out);
+            exitScaleAnimator(layoutCenter,"scaleY",1,0,0,0,400);
+            exitScaleAnimator(layoutBottom,"scaleY",1,0,0,PixUtil.dip2px(SearchAppActivity.this,250),400);
             return true;
         }
         return super.onKeyDown(keyCode, event);
@@ -219,8 +239,8 @@ public class SearchAppActivity extends BaseActivity {
     @Override
     protected void onPressHome() {
         super.onPressHome();
-        finish();
-        overridePendingTransition(0,R.anim.slide_up_out);
+        exitScaleAnimator(layoutCenter,"scaleY",1,0,0,0,400);
+        exitScaleAnimator(layoutBottom,"scaleY",1,0,0,PixUtil.dip2px(SearchAppActivity.this,250),400);
     }
 
 
@@ -242,5 +262,35 @@ public class SearchAppActivity extends BaseActivity {
             layoutInput.setBackgroundColor(MyApplication.tintColor);
             layoutInput.setTextsColor(MyApplication.textColor);
     }
+
+
+
+    private void enterScaleAnimator(View target,String propertyName,float start,float end,float pivotX,float pivotY,int time){
+        target.setPivotX(pivotX);
+        target.setPivotY(pivotY);
+        ObjectAnimator animator=ObjectAnimator.ofFloat(target,propertyName,start,end);
+        animator.setDuration(time);
+        animator.setInterpolator(new OvershootInterpolator());
+        animator.start();
+    }
+
+
+    private void exitScaleAnimator(View target,String propertyName,float start,float end,float pivotX,float pivotY,int time){
+        target.setPivotX(pivotX);
+        target.setPivotY(pivotY);
+        ObjectAnimator animator=ObjectAnimator.ofFloat(target,propertyName,start,end);
+        animator.setDuration(time);
+        animator.setInterpolator(new AnticipateInterpolator());
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                finish();
+            }
+        });
+        animator.start();
+    }
+
+
 
 }

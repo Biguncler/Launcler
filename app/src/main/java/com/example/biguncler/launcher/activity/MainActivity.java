@@ -1,6 +1,9 @@
 package com.example.biguncler.launcher.activity;
 
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -22,7 +25,10 @@ import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AnticipateInterpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -66,6 +72,7 @@ public class MainActivity extends BaseActivity {
     private Button btSearch;
     private AppTabLayout layoutTab;
     private LinearLayout layoutSearch;
+    private FrameLayout layoutBottom;
 
 
 
@@ -83,6 +90,18 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        layoutBottom.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                enterScaleAnimator(layoutBottom,"scaleY",0,1,0,PixUtil.dip2px(MainActivity.this,85),400);
+            }
+        }, 100);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        exitScaleAnimator(layoutBottom,"scaleY",1,0,0,PixUtil.dip2px(MainActivity.this,85),400);
     }
 
     @Override
@@ -100,6 +119,7 @@ public class MainActivity extends BaseActivity {
         btSearch = (Button) findViewById(R.id.view_bt_search);
         layoutTab = (AppTabLayout) findViewById(R.id.layout_ll_tab);
         layoutSearch= (LinearLayout) findViewById(R.id.layout_ll_search);
+        layoutBottom= (FrameLayout) findViewById(R.id.layout_fl_bottom);
         blurBackground();
         setActivityTheme();
 
@@ -229,6 +249,24 @@ public class MainActivity extends BaseActivity {
     private String getTime(){
         SimpleDateFormat format=new SimpleDateFormat("HH:mm");
         return format.format(new Date(System.currentTimeMillis()));
+    }
+
+    private void enterScaleAnimator(View target,String propertyName,float start,float end,float pivotX,float pivotY,int time){
+        target.setPivotX(pivotX);
+        target.setPivotY(pivotY);
+        ObjectAnimator animator=ObjectAnimator.ofFloat(target,propertyName,start,end);
+        animator.setDuration(time);
+        animator.setInterpolator(new OvershootInterpolator());
+        animator.start();
+    }
+
+    private void exitScaleAnimator(View target,String propertyName,float start,float end,float pivotX,float pivotY,int time){
+        target.setPivotX(pivotX);
+        target.setPivotY(pivotY);
+        ObjectAnimator animator=ObjectAnimator.ofFloat(target,propertyName,start,end);
+        animator.setDuration(time);
+        animator.setInterpolator(new AnticipateInterpolator());
+        animator.start();
     }
 }
 
