@@ -26,12 +26,11 @@
             android:id="@+id/view_bt_title"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/selector_bg_click"
+            android:background="?attr/selectableItemBackground"
             android:gravity="center_vertical"
             android:hint="APPLICATIONS"
             android:textSize="@dimen/text_size_search_bar"
             android:textColorHint="@android:color/white"
-            android:enabled="false"
             android:paddingLeft="10dp"
             android:singleLine="true" />
         </LinearLayout>
