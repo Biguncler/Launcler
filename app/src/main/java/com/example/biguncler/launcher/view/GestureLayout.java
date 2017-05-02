@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 
 import com.example.biguncler.launcher.R;
 import com.example.biguncler.launcher.activity.AppActivity;
+import com.example.biguncler.launcher.activity.MainActivity;
 import com.example.biguncler.launcher.activity.SearchAppActivity;
 import com.example.biguncler.launcher.activity.SettingActivity;
 import com.example.biguncler.launcher.application.MyApplication;
@@ -159,17 +160,15 @@ public class GestureLayout extends LinearLayout {
         private void doUp(){
             String result=SharedPreferenceDB.get(context,SharedPreferenceDB.SLIDE_UP_TO_SHOW_APPS);
             if(result.equals("true")){
-                Intent intent=new Intent(context, AppActivity.class);
-                context.startActivity(intent);
                 startVibrate();
+                ((MainActivity)context).getHandler().sendEmptyMessage(MainActivity.FLAG_GESTURE_UP);
             }
         }
 
 
         private void doDown(){
-                Intent intent=new Intent(context, SearchAppActivity.class);
-                context.startActivity(intent);
-                startVibrate();
+            startVibrate();
+            ((MainActivity)context).getHandler().sendEmptyMessage(MainActivity.FLAG_GESTURE_DOWN);
         }
 
         private void doDoubleClick(){

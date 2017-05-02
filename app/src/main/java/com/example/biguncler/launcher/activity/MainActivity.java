@@ -15,6 +15,7 @@ import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -68,6 +69,8 @@ import java.util.Date;
 
 
 public class MainActivity extends BaseActivity {
+    public static final int FLAG_GESTURE_UP=1;
+    public static final int FLAG_GESTURE_DOWN=2;
     private ImageView ivBlurTab, ivBlurSearch,ivStatusBarBg;
     private Button btSearch;
     private AppTabLayout layoutTab;
@@ -102,8 +105,8 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        exitScaleAnimator(layoutBottom,"scaleY",1,0,0,PixUtil.dip2px(MainActivity.this,85),200);
-        exitScaleAnimator(btSearch,"scaleX",1,0,0,0,200);
+       /* exitScaleAnimator(layoutBottom,"scaleY",1,0,0,PixUtil.dip2px(MainActivity.this,85),200);
+        exitScaleAnimator(btSearch,"scaleX",1,0,0,0,200);*/
     }
 
     @Override
@@ -262,13 +265,52 @@ public class MainActivity extends BaseActivity {
         animator.start();
     }
 
-    private void exitScaleAnimator(View target,String propertyName,float start,float end,float pivotX,float pivotY,int time){
+    private void exitScaleAnimator(View target,String propertyName,float start,float end,float pivotX,float pivotY,int time,AnimatorListenerAdapter listenerAdapter){
         target.setPivotX(pivotX);
         target.setPivotY(pivotY);
         ObjectAnimator animator=ObjectAnimator.ofFloat(target,propertyName,start,end);
         animator.setDuration(time);
+        if(listenerAdapter!=null)
+        animator.addListener(listenerAdapter);
         animator.setInterpolator(new AnticipateInterpolator());
         animator.start();
     }
+
+
+    public Handler getHandler() {
+        return handler;
+    }
+
+    Handler handler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case FLAG_GESTURE_DOWN:
+                    exitScaleAnimator(btSearch,"scaleX",1,0,0,0,200,null);
+                    exitScaleAnimator(layoutBottom, "scaleY", 1, 0, 0, PixUtil.dip2px(MainActivity.this, 85), 200, new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            Intent intent=new Intent(MainActivity.this, SearchAppActivity.class);
+                            MainActivity.this.startActivity(intent);
+                        }
+                    });
+
+                    break;
+                case FLAG_GESTURE_UP:
+                    exitScaleAnimator(btSearch,"scaleX",1,0,0,0,200,null);
+                    exitScaleAnimator(layoutBottom, "scaleY", 1, 0, 0, PixUtil.dip2px(MainActivity.this, 85), 200, new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            Intent intent=new Intent(MainActivity.this, AppActivity.class);
+                            MainActivity.this.startActivity(intent);
+                        }
+                    });
+                    break;
+
+            }
+        }
+    };
 }
 
