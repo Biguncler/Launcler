@@ -201,14 +201,14 @@ public class AppActivity extends BaseActivity {
         AnimatorUtil.getInstance().startAnimator(btText,AnimatorUtil.ALPHA,0,1,200,null,null);
         int height=ScreenUtil.getScreenHeight(this)-(PixUtil.dip2px(this,22+48+2));
         float height2=PixUtil.dip2px(this,85);
-        AnimatorUtil.getInstance().startAnimator(layoutCenter,AnimatorUtil.SCALE_Y,height2/height,1,0,height,300,new DecelerateInterpolator(),null);
+        AnimatorUtil.getInstance().startAnimator(layoutCenter,AnimatorUtil.SCALE_Y,height2/height,1,0,height,200,new DecelerateInterpolator(),null);
     }
 
     private void exitAnimation(AnimatorListenerAdapter listenerAdapter){
         AnimatorUtil.getInstance().startAnimator(btText,AnimatorUtil.ALPHA,1,0,200,null,null);
         int height=ScreenUtil.getScreenHeight(this)-(PixUtil.dip2px(this,22+48+2));
         float height2=PixUtil.dip2px(this,85);
-        AnimatorUtil.getInstance().startAnimator(layoutCenter,AnimatorUtil.SCALE_Y,1,height2/height,0,height,300,new AnticipateInterpolator(),listenerAdapter);
+        AnimatorUtil.getInstance().startAnimator(layoutCenter,AnimatorUtil.SCALE_Y,1,height2/height,0,height,200,null,listenerAdapter);
     }
 
 }

@@ -312,11 +312,13 @@ public class MainActivity extends BaseActivity {
     };
 
     private void enterAnimation(AnimatorListenerAdapter listenerAdapter){
-        AnimatorUtil.getInstance().startAnimator(btSearch,AnimatorUtil.ALPHA,0,1,200,null,listenerAdapter);
+        AnimatorUtil.getInstance().startAnimator(btSearch,AnimatorUtil.ALPHA,0,1,200,null,null);
+        AnimatorUtil.getInstance().startAnimator(layoutBottom,AnimatorUtil.SCALE_Y,0,1,0,PixUtil.dip2px(this,85),150,new OvershootInterpolator(),listenerAdapter);
     }
 
     private void exitAnimation(AnimatorListenerAdapter listenerAdapter){
-        AnimatorUtil.getInstance().startAnimator(btSearch,AnimatorUtil.ALPHA,1,0,200,null,listenerAdapter);
+        AnimatorUtil.getInstance().startAnimator(btSearch,AnimatorUtil.ALPHA,1,0,200,null,null);
+        AnimatorUtil.getInstance().startAnimator(layoutBottom,AnimatorUtil.SCALE_Y,1,0,0,PixUtil.dip2px(this,85),150,new AnticipateInterpolator(),listenerAdapter);
     }
 }
 
