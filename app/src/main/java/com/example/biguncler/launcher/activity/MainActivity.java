@@ -27,6 +27,7 @@ import android.view.ViewAnimationUtils;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AnticipateInterpolator;
+import android.view.animation.CycleInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -46,6 +47,7 @@ import com.example.biguncler.launcher.biz.ScaleAnimationMap;
 import com.example.biguncler.launcher.biz.WaveHelper;
 import com.example.biguncler.launcher.db.SharedPreferenceDB;
 import com.example.biguncler.launcher.mode.Weather;
+import com.example.biguncler.launcher.util.AnimatorUtil;
 import com.example.biguncler.launcher.util.AppUtil;
 import com.example.biguncler.launcher.util.Arith;
 import com.example.biguncler.launcher.util.BgStyle;
@@ -96,8 +98,7 @@ public class MainActivity extends BaseActivity {
         layoutBottom.postDelayed(new Runnable() {
             @Override
             public void run() {
-                enterScaleAnimator(layoutBottom,"scaleY",0,1,0,PixUtil.dip2px(MainActivity.this,85),200);
-                enterScaleAnimator(btSearch,"scaleX",0,1,0,0,200);
+                enterAnimation(null);
             }
         }, 100);
     }
@@ -286,8 +287,7 @@ public class MainActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case FLAG_GESTURE_DOWN:
-                    exitScaleAnimator(btSearch,"scaleX",1,0,0,0,200,null);
-                    exitScaleAnimator(layoutBottom, "scaleY", 1, 0, 0, PixUtil.dip2px(MainActivity.this, 85), 200, new AnimatorListenerAdapter() {
+                    exitAnimation(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             super.onAnimationEnd(animation);
@@ -295,11 +295,9 @@ public class MainActivity extends BaseActivity {
                             MainActivity.this.startActivity(intent);
                         }
                     });
-
                     break;
                 case FLAG_GESTURE_UP:
-                    exitScaleAnimator(btSearch,"scaleX",1,0,0,0,200,null);
-                    exitScaleAnimator(layoutBottom, "scaleY", 1, 0, 0, PixUtil.dip2px(MainActivity.this, 85), 200, new AnimatorListenerAdapter() {
+                    exitAnimation(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             super.onAnimationEnd(animation);
@@ -312,5 +310,13 @@ public class MainActivity extends BaseActivity {
             }
         }
     };
+
+    private void enterAnimation(AnimatorListenerAdapter listenerAdapter){
+        AnimatorUtil.getInstance().startAnimator(btSearch,AnimatorUtil.ALPHA,0,1,200,null,listenerAdapter);
+    }
+
+    private void exitAnimation(AnimatorListenerAdapter listenerAdapter){
+        AnimatorUtil.getInstance().startAnimator(btSearch,AnimatorUtil.ALPHA,1,0,200,null,listenerAdapter);
+    }
 }
 

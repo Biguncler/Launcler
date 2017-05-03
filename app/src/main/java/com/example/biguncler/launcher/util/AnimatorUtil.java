@@ -20,13 +20,24 @@ public class AnimatorUtil {
     public static final String ROTATION_X="rotationX";
     public static final String ROTATION_Y="rotationY";
     public static final String TRANSLATION_X="translationX";
-    public static final String TRANSLATION_Y="translationY";
+    public static final String TRANSLATION_Y="Y";
     public static final String TRANSLATION="translation";
 
+    public static AnimatorUtil instance;
+
+    public static AnimatorUtil getInstance(){
+        if(instance==null){
+            synchronized (AnimatorUtil.class){
+                return instance=new AnimatorUtil();
+            }
+        }else{
+            return instance;
+        }
+    }
 
     public void startAnimator(View target, String propertyName, float start, float end, float pivotX, float pivotY,int duration, TimeInterpolator timeInterpolator, AnimatorListenerAdapter listenerAdapter){
         if(pivotX>=0)target.setPivotX(pivotX);
-        if(pivotY>=0)target.setPivotX(pivotY);
+        if(pivotY>=0)target.setPivotY(pivotY);
         ObjectAnimator objectAnimator=ObjectAnimator.ofFloat(target,propertyName,start,end);
         objectAnimator.setDuration(duration);
         if(timeInterpolator!=null)objectAnimator.setInterpolator(timeInterpolator);
@@ -51,7 +62,7 @@ public class AnimatorUtil {
 
     public ObjectAnimator getObjectAnimator(View target, String propertyName, float start, float end, float pivotX, float pivotY){
         if(pivotX>=0)target.setPivotX(pivotX);
-        if(pivotY>=0)target.setPivotX(pivotY);
+        if(pivotY>=0)target.setPivotY(pivotY);
         ObjectAnimator objectAnimator=ObjectAnimator.ofFloat(target,propertyName,start,end);
         return objectAnimator;
     }

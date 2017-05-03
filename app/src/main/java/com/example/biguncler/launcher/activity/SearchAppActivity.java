@@ -29,6 +29,7 @@ import com.example.biguncler.launcher.application.MyApplication;
 import com.example.biguncler.launcher.biz.AppManager;
 import com.example.biguncler.launcher.biz.BitmapManager;
 import com.example.biguncler.launcher.mode.AppMode;
+import com.example.biguncler.launcher.util.AnimatorUtil;
 import com.example.biguncler.launcher.util.AppUtil;
 import com.example.biguncler.launcher.util.PixUtil;
 import com.example.biguncler.launcher.view.InputMethodLayout;
@@ -59,7 +60,7 @@ public class SearchAppActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        enterActivity();
+        enterAnimation(null);
     }
 
     @Override
@@ -154,7 +155,13 @@ public class SearchAppActivity extends BaseActivity {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if(motionEvent.getAction()==MotionEvent.ACTION_UP){
-                   exitAcitivity();
+                    exitAnimation(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            finish();
+                        }
+                    });
                 }
                 return true;
             }
@@ -216,7 +223,13 @@ public class SearchAppActivity extends BaseActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
-            exitAcitivity();
+            exitAnimation(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    finish();
+                }
+            });
             return true;
         }
         return super.onKeyDown(keyCode, event);
@@ -235,7 +248,13 @@ public class SearchAppActivity extends BaseActivity {
     @Override
     protected void onPressHome() {
         super.onPressHome();
-        exitAcitivity();
+        exitAnimation(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                finish();
+            }
+        });
     }
 
 
@@ -258,57 +277,15 @@ public class SearchAppActivity extends BaseActivity {
             layoutInput.setTextsColor(MyApplication.textColor);
     }
 
-
-
-    private void enterScaleAnimator(View target,String propertyName,float start,float end,float pivotX,float pivotY,int time){
-        target.setPivotX(pivotX);
-        target.setPivotY(pivotY);
-        ObjectAnimator animator=ObjectAnimator.ofFloat(target,propertyName,start,end);
-        animator.setDuration(time);
-        animator.setInterpolator(new OvershootInterpolator());
-        animator.start();
+    private void enterAnimation(AnimatorListenerAdapter listenerAdapter){
+        AnimatorUtil.getInstance().startAnimator(btText,AnimatorUtil.ALPHA,0,1,200,null,null);
+        AnimatorUtil.getInstance().startAnimator(layoutCenter,AnimatorUtil.SCALE_Y,0,1,0,0,300,new OvershootInterpolator(),null);
+        AnimatorUtil.getInstance().startAnimator(layoutBottom,AnimatorUtil.SCALE_Y,85f/250,1,0,PixUtil.dip2px(this,250),300,new OvershootInterpolator(),listenerAdapter);
     }
 
-    private void enterActivity(){
-        enterScaleAnimator(layoutCenter,"scaleY",0,1,0,0,400);
-        enterScaleAnimator(layoutBottom,"scaleY",0,1,0, PixUtil.dip2px(this,250),400);
-        enterScaleAnimator(btText,"scaleX",0,1,0,0,400);
+    private void exitAnimation(AnimatorListenerAdapter listenerAdapter){
+        AnimatorUtil.getInstance().startAnimator(btText,AnimatorUtil.ALPHA,1,0,200,null,null);
+        AnimatorUtil.getInstance().startAnimator(layoutCenter,AnimatorUtil.SCALE_Y,1,0,0,0,300,new AnticipateInterpolator(),null);
+        AnimatorUtil.getInstance().startAnimator(layoutBottom,AnimatorUtil.SCALE_Y,1,85f/250,0,PixUtil.dip2px(this,250),300,new AnticipateInterpolator(),listenerAdapter);
     }
-
-    private void exitAcitivity(){
-        exitScaleAnimatorWithFinish(layoutCenter,"scaleY",1,0,0,0,400);
-        exitScaleAnimatorWithFinish(layoutBottom,"scaleY",1,0,0,PixUtil.dip2px(SearchAppActivity.this,250),400);
-        exitScaleAnimator(btText,"scaleX",1,0,0,0,400);
-    }
-
-
-    private void exitScaleAnimatorWithFinish(View target,String propertyName,float start,float end,float pivotX,float pivotY,int time){
-        target.setPivotX(pivotX);
-        target.setPivotY(pivotY);
-        ObjectAnimator animator=ObjectAnimator.ofFloat(target,propertyName,start,end);
-        animator.setDuration(time);
-        animator.setInterpolator(new AnticipateInterpolator());
-        animator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                finish();
-            }
-        });
-        animator.start();
-    }
-
-    private void exitScaleAnimator(View target,String propertyName,float start,float end,float pivotX,float pivotY,int time){
-        target.setPivotX(pivotX);
-        target.setPivotY(pivotY);
-        ObjectAnimator animator=ObjectAnimator.ofFloat(target,propertyName,start,end);
-        animator.setDuration(time);
-        animator.setInterpolator(new AnticipateInterpolator());
-        animator.start();
-    }
-
-
-
-
-
 }

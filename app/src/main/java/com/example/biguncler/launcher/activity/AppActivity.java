@@ -6,9 +6,13 @@ import android.animation.ObjectAnimator;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AnticipateInterpolator;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -22,7 +26,9 @@ import com.example.biguncler.launcher.R;
 import com.example.biguncler.launcher.adapter.GridAdapter;
 import com.example.biguncler.launcher.application.MyApplication;
 import com.example.biguncler.launcher.biz.BitmapManager;
+import com.example.biguncler.launcher.util.AnimatorUtil;
 import com.example.biguncler.launcher.util.AppUtil;
+import com.example.biguncler.launcher.util.PixUtil;
 import com.example.biguncler.launcher.util.ScreenUtil;
 
 public class AppActivity extends BaseActivity {
@@ -45,11 +51,7 @@ public class AppActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        int pivotx= ScreenUtil.getScreenWidth(this)/2;
-        int pivoty=ScreenUtil.getScreenHeight(this)/2;
-        enterScaleAnimator(layoutCenter,"scaleY",0,1,pivotx,pivoty,400);
-        enterScaleAnimator(layoutCenter,"scaleX",0,1,pivotx,pivoty,400);
-        enterScaleAnimator(btText,"scaleX",0,1,0,0,400);
+        enterAnimation();
     }
 
     @Override
@@ -117,11 +119,13 @@ public class AppActivity extends BaseActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
-            int pivotx= ScreenUtil.getScreenWidth(this)/2;
-            int pivoty=ScreenUtil.getScreenHeight(this)/2;
-            exitScaleAnimatorWithFinish(layoutCenter,"scaleY",1,0,pivotx,pivoty,400);
-            exitScaleAnimatorWithFinish(layoutCenter,"scaleX",1,0,pivotx,pivoty,400);
-            exitScaleAnimator(btText,"scaleX",1,0,0,0,400);
+            exitAnimation(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    finish();
+                }
+            });
             return true;
         }
         return super.onKeyDown(keyCode, event);
@@ -141,11 +145,13 @@ public class AppActivity extends BaseActivity {
     @Override
     protected void onPressHome() {
         super.onPressHome();
-        int pivotx= ScreenUtil.getScreenWidth(this)/2;
-        int pivoty=ScreenUtil.getScreenHeight(this)/2;
-        exitScaleAnimatorWithFinish(layoutCenter,"scaleY",1,0,pivotx,pivoty,400);
-        exitScaleAnimatorWithFinish(layoutCenter,"scaleX",1,0,pivotx,pivoty,400);
-        exitScaleAnimator(btText,"scaleX",1,0,0,0,400);
+        exitAnimation(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                finish();
+            }
+        });
     }
 
 
@@ -189,39 +195,20 @@ public class AppActivity extends BaseActivity {
         gridAdapter.notifyDataSetChanged();
     }
 
-    private void enterScaleAnimator(View target,String propertyName,float start,float end,float pivotX,float pivotY,int time){
-        target.setPivotX(pivotX);
-        target.setPivotY(pivotY);
-        ObjectAnimator animator=ObjectAnimator.ofFloat(target,propertyName,start,end);
-        animator.setDuration(time);
-        animator.setInterpolator(new OvershootInterpolator());
-        animator.start();
+
+
+    private void enterAnimation(){
+        AnimatorUtil.getInstance().startAnimator(btText,AnimatorUtil.ALPHA,0,1,200,null,null);
+        int height=ScreenUtil.getScreenHeight(this)-(PixUtil.dip2px(this,22+48+2));
+        float height2=PixUtil.dip2px(this,85);
+        AnimatorUtil.getInstance().startAnimator(layoutCenter,AnimatorUtil.SCALE_Y,height2/height,1,0,height,300,new DecelerateInterpolator(),null);
     }
 
-
-    private void exitScaleAnimatorWithFinish(View target,String propertyName,float start,float end,float pivotX,float pivotY,int time){
-        target.setPivotX(pivotX);
-        target.setPivotY(pivotY);
-        ObjectAnimator animator=ObjectAnimator.ofFloat(target,propertyName,start,end);
-        animator.setDuration(time);
-        animator.setInterpolator(new AnticipateInterpolator());
-        animator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                finish();
-            }
-        });
-        animator.start();
-    }
-
-    private void exitScaleAnimator(View target,String propertyName,float start,float end,float pivotX,float pivotY,int time){
-        target.setPivotX(pivotX);
-        target.setPivotY(pivotY);
-        ObjectAnimator animator=ObjectAnimator.ofFloat(target,propertyName,start,end);
-        animator.setDuration(time);
-        animator.setInterpolator(new AnticipateInterpolator());
-        animator.start();
+    private void exitAnimation(AnimatorListenerAdapter listenerAdapter){
+        AnimatorUtil.getInstance().startAnimator(btText,AnimatorUtil.ALPHA,1,0,200,null,null);
+        int height=ScreenUtil.getScreenHeight(this)-(PixUtil.dip2px(this,22+48+2));
+        float height2=PixUtil.dip2px(this,85);
+        AnimatorUtil.getInstance().startAnimator(layoutCenter,AnimatorUtil.SCALE_Y,1,height2/height,0,height,300,new AnticipateInterpolator(),listenerAdapter);
     }
 
 }
