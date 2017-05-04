@@ -96,13 +96,13 @@
                         android:orientation="horizontal"
                         >
                         <RadioButton
-                            android:id="@+id/view_bt_show_app_false"
+                            android:id="@+id/view_bt_show_app_true"
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:layout_height="40dp"
                             android:text="MUTED" />
                         <RadioButton
-                            android:id="@+id/view_bt_show_app_true"
+                            android:id="@+id/view_bt_show_app_false"
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:layout_height="40dp"

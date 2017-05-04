@@ -75,7 +75,7 @@ public class SettingActivity extends BaseActivity {
             rgShowApps.check(R.id.view_bt_show_app_false);
         }else{
             SharedPreferenceDB.save(this,SharedPreferenceDB.ANIAMTION_STYLE,AnimationStyle.MUTED);
-            rgShowApps.check(R.id.view_bt_show_app_false);
+            rgShowApps.check(R.id.view_bt_show_app_true);
         }
     }
 
@@ -114,10 +114,10 @@ public class SettingActivity extends BaseActivity {
             public void onCheckedChanged(RadioGroup radioGroup, int id) {
                 switch (id) {
                     case R.id.view_bt_show_app_true:
-                        doClick(SharedPreferenceDB.ANIAMTION_STYLE,AnimationStyle.STICKY);
+                        doClick(SharedPreferenceDB.ANIAMTION_STYLE,AnimationStyle.MUTED);
                         break;
                     case R.id.view_bt_show_app_false:
-                        doClick(SharedPreferenceDB.ANIAMTION_STYLE,AnimationStyle.MUTED);
+                        doClick(SharedPreferenceDB.ANIAMTION_STYLE,AnimationStyle.STICKY);
                         break;
 
                 }
