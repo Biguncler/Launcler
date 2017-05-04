@@ -86,9 +86,8 @@ public class AppUtil {
      */
     public static boolean luanchApp(Context context,String packageName,View view){
         try{
-            Intent intent = new Intent();
-            intent = context.getPackageManager().getLaunchIntentForPackage(packageName);
-            ActivityOptions options=ActivityOptions.makeScaleUpAnimation(view,view.getWidth()/2,view.getHeight()/2,0,0);
+            Intent intent = context.getPackageManager().getLaunchIntentForPackage(packageName);
+            ActivityOptions options=ActivityOptions.makeScaleUpAnimation(view,view.getWidth()/2,view.getHeight()/2,view.getWidth(),view.getHeight());
             context.startActivity(intent,options.toBundle());
         }catch (Exception e){
             e.printStackTrace();
@@ -107,7 +106,7 @@ public class AppUtil {
         try{
             Uri packageURI = Uri.parse("package:"+pakeageName);
             Intent uninstallIntent = new Intent(Intent.ACTION_DELETE, packageURI);
-            ActivityOptions options=ActivityOptions.makeScaleUpAnimation(view,view.getWidth()/2,view.getHeight()/2,0,0);
+            ActivityOptions options=ActivityOptions.makeScaleUpAnimation(view,view.getWidth()/2,view.getHeight()/2,view.getWidth(),view.getHeight());
             cotext.startActivity(uninstallIntent,options.toBundle());
         }catch (Exception e){
             e.printStackTrace();
