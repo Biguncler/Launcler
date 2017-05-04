@@ -5,6 +5,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -56,6 +57,7 @@ import com.example.biguncler.launcher.util.ChineseNumber;
 import com.example.biguncler.launcher.util.FastBlur;
 import com.example.biguncler.launcher.util.Month;
 import com.example.biguncler.launcher.util.PixUtil;
+import com.example.biguncler.launcher.util.ScreenUtil;
 import com.example.biguncler.launcher.util.WallpaperUtil;
 import com.example.biguncler.launcher.util.Week;
 import com.example.biguncler.launcher.view.AppTabLayout;
@@ -78,7 +80,6 @@ public class MainActivity extends BaseActivity {
     private AppTabLayout layoutTab;
     private LinearLayout layoutSearch;
     private FrameLayout layoutBottom;
-    private boolean enableAnimation=false;
 
 
 
@@ -96,14 +97,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(enableAnimation){
-        layoutBottom.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                enterAnimation(null);
-                enableAnimation=false;
-            }
-        }, 100);}
     }
 
     @Override
@@ -272,8 +265,7 @@ public class MainActivity extends BaseActivity {
                         public void onAnimationEnd(Animator animation) {
                             super.onAnimationEnd(animation);
                             Intent intent=new Intent(MainActivity.this, SearchAppActivity.class);
-                            MainActivity.this.startActivity(intent);
-                            enableAnimation=true;
+                            MainActivity.this.startActivityForResult(intent,FLAG_GESTURE_DOWN);
                         }
                     });
                     break;
@@ -283,8 +275,7 @@ public class MainActivity extends BaseActivity {
                         public void onAnimationEnd(Animator animation) {
                             super.onAnimationEnd(animation);
                             Intent intent=new Intent(MainActivity.this, AppActivity.class);
-                            MainActivity.this.startActivity(intent);
-                            enableAnimation=true;
+                            MainActivity.this.startActivityForResult(intent,FLAG_GESTURE_UP);
                         }
                     });
                     break;
@@ -293,14 +284,47 @@ public class MainActivity extends BaseActivity {
         }
     };
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==Activity.RESULT_CANCELED){
+            switch (requestCode){
+                case FLAG_GESTURE_DOWN:
+                    enterAnimation(null);
+                    break;
+                case FLAG_GESTURE_UP:
+                    enterAnimation(null);
+                    break;
+            }
+        }else{
+            btSearch.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    enterAnimation(null);
+                }
+            },280);
+        }
+    }
+
     private void enterAnimation(AnimatorListenerAdapter listenerAdapter){
-        AnimatorUtil.getInstance().startAnimator(btSearch,AnimatorUtil.ALPHA,0,1,200,null,listenerAdapter);
-        AnimatorUtil.getInstance().startAnimator(layoutBottom,AnimatorUtil.SCALE_Y,0,1,0,PixUtil.dip2px(this,85),150,new OvershootInterpolator(),listenerAdapter);
+        AnimatorUtil.getInstance().startAnimator(btSearch,AnimatorUtil.ALPHA,0,1,200,null,null);
+
+        int startY= ScreenUtil.getScreenHeight(this);
+        int endY=ScreenUtil.getScreenHeight(this)-PixUtil.dip2px(this,85);
+        int pivotX=0;
+        int pivotY=ScreenUtil.getScreenHeight(this);
+        AnimatorUtil.getInstance().startAnimator(layoutBottom,AnimatorUtil.TRANSLATION_Y,startY,endY,pivotX,pivotY,150,null,listenerAdapter);
     }
 
     private void exitAnimation(AnimatorListenerAdapter listenerAdapter){
-        AnimatorUtil.getInstance().startAnimator(btSearch,AnimatorUtil.ALPHA,1,0,200,null,listenerAdapter);
-        AnimatorUtil.getInstance().startAnimator(layoutBottom,AnimatorUtil.SCALE_Y,1,0,0,PixUtil.dip2px(this,85),150,new AnticipateInterpolator(),listenerAdapter);
+        AnimatorUtil.getInstance().startAnimator(btSearch,AnimatorUtil.ALPHA,1,0,200,null,null);
+
+        int endY= ScreenUtil.getScreenHeight(this);
+        int startY=ScreenUtil.getScreenHeight(this)-PixUtil.dip2px(this,85);
+        int pivotX=0;
+        int pivotY=startY;
+        AnimatorUtil.getInstance().startAnimator(layoutBottom,AnimatorUtil.TRANSLATION_Y,startY,endY,pivotX,pivotY,150,null,listenerAdapter);
     }
 }
 

@@ -3,6 +3,7 @@ package com.example.biguncler.launcher.activity;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -63,6 +64,7 @@ public class AppActivity extends BaseActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        setResult(Activity.RESULT_OK,null);
         finish();
 
     }
@@ -200,15 +202,22 @@ public class AppActivity extends BaseActivity {
     private void enterAnimation(){
         AnimatorUtil.getInstance().startAnimator(btText,AnimatorUtil.ALPHA,0,1,200,null,null);
         int height=ScreenUtil.getScreenHeight(this)-(PixUtil.dip2px(this,22+48+2));
-        float height2=PixUtil.dip2px(this,85);
-        AnimatorUtil.getInstance().startAnimator(layoutCenter,AnimatorUtil.SCALE_Y,height2/height,1,0,height,200,new DecelerateInterpolator(),null);
+
+        int startY=ScreenUtil.getScreenHeight(this);
+        int endY=PixUtil.dip2px(this,22+48+2);
+        int pivotX=0;
+        int pivotY=ScreenUtil.getScreenHeight(this);
+        AnimatorUtil.getInstance().startAnimator(layoutCenter,AnimatorUtil.TRANSLATION_Y,startY,endY,pivotX,pivotY,250,null,null);
     }
 
     private void exitAnimation(AnimatorListenerAdapter listenerAdapter){
         AnimatorUtil.getInstance().startAnimator(btText,AnimatorUtil.ALPHA,1,0,200,null,null);
-        int height=ScreenUtil.getScreenHeight(this)-(PixUtil.dip2px(this,22+48+2));
-        float height2=PixUtil.dip2px(this,85);
-        AnimatorUtil.getInstance().startAnimator(layoutCenter,AnimatorUtil.SCALE_Y,1,height2/height,0,height,200,null,listenerAdapter);
+
+        int endY=ScreenUtil.getScreenHeight(this);
+        int startY=PixUtil.dip2px(this,22+48+2);
+        int pivotX=0;
+        int pivotY=PixUtil.dip2px(this,22+48+2);
+        AnimatorUtil.getInstance().startAnimator(layoutCenter,AnimatorUtil.TRANSLATION_Y,startY,endY,pivotX,pivotY,250,null,listenerAdapter);
     }
 
 }

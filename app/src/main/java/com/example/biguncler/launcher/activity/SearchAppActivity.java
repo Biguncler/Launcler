@@ -3,6 +3,7 @@ package com.example.biguncler.launcher.activity;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ import com.example.biguncler.launcher.mode.AppMode;
 import com.example.biguncler.launcher.util.AnimatorUtil;
 import com.example.biguncler.launcher.util.AppUtil;
 import com.example.biguncler.launcher.util.PixUtil;
+import com.example.biguncler.launcher.util.ScreenUtil;
 import com.example.biguncler.launcher.view.InputMethodLayout;
 
 import java.util.ArrayList;
@@ -71,8 +73,9 @@ public class SearchAppActivity extends BaseActivity {
 
     @Override
     protected void onStop() {
-        finish();
         super.onStop();
+        setResult(Activity.RESULT_OK,null);
+        finish();
 
     }
 
@@ -279,13 +282,21 @@ public class SearchAppActivity extends BaseActivity {
 
     private void enterAnimation(AnimatorListenerAdapter listenerAdapter){
         AnimatorUtil.getInstance().startAnimator(btText,AnimatorUtil.ALPHA,0,1,200,null,null);
-        AnimatorUtil.getInstance().startAnimator(layoutCenter,AnimatorUtil.SCALE_Y,0,1,0,0,300,new OvershootInterpolator(),null);
-        AnimatorUtil.getInstance().startAnimator(layoutBottom,AnimatorUtil.SCALE_Y,85f/250,1,0,PixUtil.dip2px(this,250),300,new OvershootInterpolator(),listenerAdapter);
+        AnimatorUtil.getInstance().startAnimator(layoutCenter,AnimatorUtil.SCALE_Y,0,1,0,0,250,null,null);
+        int startY2= ScreenUtil.getScreenHeight(this);
+        int endY2=startY2-PixUtil.dip2px(this,250);
+        int pivotX2=0;
+        int pivotY2=ScreenUtil.getScreenHeight(this);
+        AnimatorUtil.getInstance().startAnimator(layoutBottom,AnimatorUtil.TRANSLATION_Y,startY2,endY2,pivotX2,pivotY2,250,null,listenerAdapter);
     }
 
     private void exitAnimation(AnimatorListenerAdapter listenerAdapter){
         AnimatorUtil.getInstance().startAnimator(btText,AnimatorUtil.ALPHA,1,0,200,null,null);
-        AnimatorUtil.getInstance().startAnimator(layoutCenter,AnimatorUtil.SCALE_Y,1,0,0,0,300,new AnticipateInterpolator(),null);
-        AnimatorUtil.getInstance().startAnimator(layoutBottom,AnimatorUtil.SCALE_Y,1,85f/250,0,PixUtil.dip2px(this,250),300,new AnticipateInterpolator(),listenerAdapter);
+        AnimatorUtil.getInstance().startAnimator(layoutCenter,AnimatorUtil.SCALE_Y,1,0,0,0,250,null,null);
+        int endY2= ScreenUtil.getScreenHeight(this);
+        int startY2=ScreenUtil.getScreenHeight(this)-PixUtil.dip2px(this,250);
+        int pivotX2=0;
+        int pivotY2=ScreenUtil.getScreenHeight(this)-PixUtil.dip2px(this,250);
+        AnimatorUtil.getInstance().startAnimator(layoutBottom,AnimatorUtil.TRANSLATION_Y,startY2,endY2,pivotX2,pivotY2,250,null,listenerAdapter);
     }
 }
