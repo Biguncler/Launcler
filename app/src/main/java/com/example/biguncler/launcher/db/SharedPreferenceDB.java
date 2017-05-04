@@ -13,7 +13,7 @@ public class SharedPreferenceDB {
     public static final String ICON_STYLE="ICON_STYLE";
     public static final String BACKGROUD_STYLE="BACKGROUD_STYLE";
     public static final String ICON_BG_STYLE="ICON_BG_STYLE";
-    public static final String SLIDE_UP_TO_SHOW_APPS="SLIDE_UP_TO_SHOW_APPS";
+    public static final String ANIAMTION_STYLE="ANIAMTION_STYLE";
     public static final String SHOW_BATTERY_LEVEL="SHOW_BATTERY_LEVEL";
     public static final String LAUNCHER_LOOCK_SCREEN="LAUNCHER_LOOCK_SCREEN";
 

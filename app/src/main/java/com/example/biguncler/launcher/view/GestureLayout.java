@@ -158,11 +158,8 @@ public class GestureLayout extends LinearLayout {
         }
 
         private void doUp(){
-            String result=SharedPreferenceDB.get(context,SharedPreferenceDB.SLIDE_UP_TO_SHOW_APPS);
-            if(result.equals("true")){
-                startVibrate();
-                ((MainActivity)context).getHandler().sendEmptyMessage(MainActivity.FLAG_GESTURE_UP);
-            }
+            startVibrate();
+            ((MainActivity)context).getHandler().sendEmptyMessage(MainActivity.FLAG_GESTURE_UP);
         }
 
 

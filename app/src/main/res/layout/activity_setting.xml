@@ -42,7 +42,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:gravity="center_vertical"
-                    android:text="Background style"
+                    android:text="BACKGROUND STYLE"
                     android:textColor="@android:color/white"
                     android:paddingLeft="10dp"
                     android:textSize="20sp" />
@@ -60,20 +60,20 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="40dp"
-                        android:text="Blur" />
+                        android:text="BLUR" />
 
                     <RadioButton
                         android:id="@+id/view_bt_bg_style_tint"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="40dp"
-                        android:text="Tint" />
+                        android:text="TINT" />
 
                 </RadioGroup>
             </LinearLayout>
 
 
-            <!--slide up to show apps-->
+            <!--Animation style-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -83,7 +83,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="35dp"
                         android:gravity="center_vertical"
-                        android:text="Slide up to show apps"
+                        android:text="ANIMATION STYLE"
                         android:textColor="@android:color/white"
                         android:paddingLeft="10dp"
                         android:textSize="20sp" />
@@ -95,20 +95,18 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         >
-
-                        <RadioButton
-                            android:id="@+id/view_bt_show_app_true"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="40dp"
-                            android:text="true" />
-
                         <RadioButton
                             android:id="@+id/view_bt_show_app_false"
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:layout_height="40dp"
-                            android:text="false" />
+                            android:text="MUTED" />
+                        <RadioButton
+                            android:id="@+id/view_bt_show_app_true"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="40dp"
+                            android:text="STICKY" />
 
                     </RadioGroup>
                 </LinearLayout>

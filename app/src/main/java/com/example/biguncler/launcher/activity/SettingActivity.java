@@ -19,6 +19,8 @@ import com.example.biguncler.launcher.R;
 import com.example.biguncler.launcher.application.MyApplication;
 import com.example.biguncler.launcher.biz.BitmapManager;
 import com.example.biguncler.launcher.db.SharedPreferenceDB;
+import com.example.biguncler.launcher.util.AnimationStyle;
+import com.example.biguncler.launcher.util.AnimatorUtil;
 import com.example.biguncler.launcher.util.BgStyle;
 import com.example.biguncler.launcher.util.PixUtil;
 import com.hp.hpl.sparta.Text;
@@ -66,13 +68,13 @@ public class SettingActivity extends BaseActivity {
         rgShowApps= (RadioGroup) findViewById(R.id.view_rg_show_apps);
         btShowApps= (Button) findViewById(R.id.view_bt_show_app_true);
         btUnshowApps= (Button) findViewById(R.id.view_bt_show_app_false);
-        String isSHowApps=SharedPreferenceDB.get(this,SharedPreferenceDB.SLIDE_UP_TO_SHOW_APPS);
-        if(isSHowApps.equals("true")){
+        String animationSytle=SharedPreferenceDB.get(this,SharedPreferenceDB.ANIAMTION_STYLE);
+        if(animationSytle.equals(AnimationStyle.MUTED)){
             rgShowApps.check(R.id.view_bt_show_app_true);
-        }else if(isSHowApps.equals("false")){
+        }else if(animationSytle.equals(AnimationStyle.STICKY)){
             rgShowApps.check(R.id.view_bt_show_app_false);
         }else{
-            SharedPreferenceDB.save(this,SharedPreferenceDB.SLIDE_UP_TO_SHOW_APPS,"false");
+            SharedPreferenceDB.save(this,SharedPreferenceDB.ANIAMTION_STYLE,AnimationStyle.MUTED);
             rgShowApps.check(R.id.view_bt_show_app_false);
         }
     }
@@ -112,10 +114,10 @@ public class SettingActivity extends BaseActivity {
             public void onCheckedChanged(RadioGroup radioGroup, int id) {
                 switch (id) {
                     case R.id.view_bt_show_app_true:
-                        doClick(SharedPreferenceDB.SLIDE_UP_TO_SHOW_APPS,"true");
+                        doClick(SharedPreferenceDB.ANIAMTION_STYLE,AnimationStyle.STICKY);
                         break;
                     case R.id.view_bt_show_app_false:
-                        doClick(SharedPreferenceDB.SLIDE_UP_TO_SHOW_APPS,"false");
+                        doClick(SharedPreferenceDB.ANIAMTION_STYLE,AnimationStyle.MUTED);
                         break;
 
                 }
