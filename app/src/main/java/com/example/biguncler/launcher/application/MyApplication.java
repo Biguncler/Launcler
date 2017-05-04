@@ -20,10 +20,13 @@ import com.example.biguncler.launcher.biz.BitmapManager;
 import com.example.biguncler.launcher.biz.ScaleAnimationMap;
 import com.example.biguncler.launcher.db.SharedPreferenceDB;
 import com.example.biguncler.launcher.mode.AppMode;
+import com.example.biguncler.launcher.util.AnimationStyle;
 import com.example.biguncler.launcher.util.BgStyle;
 import com.example.biguncler.launcher.util.BitmapUtil;
 import com.example.biguncler.launcher.util.FastBlur;
 import com.example.biguncler.launcher.util.WallpaperUtil;
+
+import org.w3c.dom.Text;
 
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
@@ -72,10 +75,13 @@ public class MyApplication extends Application {
 
     updateDate(boolean isEmulateWallpaperChanged) {
         // 背景样式
-        bgStyle =  SharedPreferenceDB.get(this,SharedPreferenceDB.BACKGROUD_STYLE);;
+        bgStyle =  SharedPreferenceDB.get(this,SharedPreferenceDB.BACKGROUD_STYLE);
         if(TextUtils.isEmpty(bgStyle)){
             bgStyle=BgStyle.BG_BLUR;
         }
+        // 动画默认样式
+        String animationSytle=SharedPreferenceDB.get(this,SharedPreferenceDB.ANIAMTION_STYLE);
+        if(TextUtils.isEmpty(animationSytle))SharedPreferenceDB.save(this,SharedPreferenceDB.ANIAMTION_STYLE, AnimationStyle.MUTED);
         // 主题
         isLightTheme = !WallpaperUtil.isWallpaperHightLight(this);
         // tint color
