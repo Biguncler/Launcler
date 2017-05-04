@@ -78,6 +78,7 @@ public class MainActivity extends BaseActivity {
     private AppTabLayout layoutTab;
     private LinearLayout layoutSearch;
     private FrameLayout layoutBottom;
+    private boolean enableAnimation=false;
 
 
 
@@ -95,19 +96,19 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if(enableAnimation){
         layoutBottom.postDelayed(new Runnable() {
             @Override
             public void run() {
                 enterAnimation(null);
+                enableAnimation=false;
             }
-        }, 100);
+        }, 100);}
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-       /* exitScaleAnimator(layoutBottom,"scaleY",1,0,0,PixUtil.dip2px(MainActivity.this,85),200);
-        exitScaleAnimator(btSearch,"scaleX",1,0,0,0,200);*/
     }
 
     @Override
@@ -257,27 +258,6 @@ public class MainActivity extends BaseActivity {
         return format.format(new Date(System.currentTimeMillis()));
     }
 
-    private void enterScaleAnimator(View target,String propertyName,float start,float end,float pivotX,float pivotY,int time){
-        target.setPivotX(pivotX);
-        target.setPivotY(pivotY);
-        ObjectAnimator animator=ObjectAnimator.ofFloat(target,propertyName,start,end);
-        animator.setDuration(time);
-        animator.setInterpolator(new OvershootInterpolator());
-        animator.start();
-    }
-
-    private void exitScaleAnimator(View target,String propertyName,float start,float end,float pivotX,float pivotY,int time,AnimatorListenerAdapter listenerAdapter){
-        target.setPivotX(pivotX);
-        target.setPivotY(pivotY);
-        ObjectAnimator animator=ObjectAnimator.ofFloat(target,propertyName,start,end);
-        animator.setDuration(time);
-        if(listenerAdapter!=null)
-        animator.addListener(listenerAdapter);
-        animator.setInterpolator(new AnticipateInterpolator());
-        animator.start();
-    }
-
-
     public Handler getHandler() {
         return handler;
     }
@@ -293,6 +273,7 @@ public class MainActivity extends BaseActivity {
                             super.onAnimationEnd(animation);
                             Intent intent=new Intent(MainActivity.this, SearchAppActivity.class);
                             MainActivity.this.startActivity(intent);
+                            enableAnimation=true;
                         }
                     });
                     break;
@@ -303,6 +284,7 @@ public class MainActivity extends BaseActivity {
                             super.onAnimationEnd(animation);
                             Intent intent=new Intent(MainActivity.this, AppActivity.class);
                             MainActivity.this.startActivity(intent);
+                            enableAnimation=true;
                         }
                     });
                     break;
@@ -312,12 +294,12 @@ public class MainActivity extends BaseActivity {
     };
 
     private void enterAnimation(AnimatorListenerAdapter listenerAdapter){
-        AnimatorUtil.getInstance().startAnimator(btSearch,AnimatorUtil.ALPHA,0,1,200,null,null);
+        AnimatorUtil.getInstance().startAnimator(btSearch,AnimatorUtil.ALPHA,0,1,200,null,listenerAdapter);
         AnimatorUtil.getInstance().startAnimator(layoutBottom,AnimatorUtil.SCALE_Y,0,1,0,PixUtil.dip2px(this,85),150,new OvershootInterpolator(),listenerAdapter);
     }
 
     private void exitAnimation(AnimatorListenerAdapter listenerAdapter){
-        AnimatorUtil.getInstance().startAnimator(btSearch,AnimatorUtil.ALPHA,1,0,200,null,null);
+        AnimatorUtil.getInstance().startAnimator(btSearch,AnimatorUtil.ALPHA,1,0,200,null,listenerAdapter);
         AnimatorUtil.getInstance().startAnimator(layoutBottom,AnimatorUtil.SCALE_Y,1,0,0,PixUtil.dip2px(this,85),150,new AnticipateInterpolator(),listenerAdapter);
     }
 }
