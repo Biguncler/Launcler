@@ -19,7 +19,7 @@ public class AnimatorUtil {
     public static final String ROTATION="rotation";
     public static final String ROTATION_X="rotationX";
     public static final String ROTATION_Y="rotationY";
-    public static final String TRANSLATION_X="translationX";
+    public static final String TRANSLATION_X="X";
     public static final String TRANSLATION_Y="Y";
     public static final String TRANSLATION="translation";
 

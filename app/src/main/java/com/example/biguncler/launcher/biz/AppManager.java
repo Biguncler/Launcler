@@ -152,7 +152,7 @@ public class AppManager {
             if (Constant_my.APP_PACKAGE_CORTANA.equals(appMode.getPackageName())) {
                 cortana.setAppName(appMode.getAppName());
                 cortana.setPackageName(appMode.getPackageName());
-                Drawable icon=context.getResources().getDrawable(R.drawable.icon_white_voice);
+                Drawable icon=context.getResources().getDrawable(R.drawable.icon_white_cortana);
                 if (MyApplication.isLightTheme) {
                     DrawableCompat.setTint(icon, ContextCompat.getColor(context, android.R.color.white));
                 } else {
