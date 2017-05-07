@@ -32,7 +32,7 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:textSize="@dimen/text_size_search_bar"
-            android:hint="Baidu Search"
+            android:hint="BAIDU SEARCH"
             android:paddingLeft="10dp"
             android:background="?attr/selectableItemBackground"
             android:maxLines="1"
