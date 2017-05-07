@@ -44,7 +44,6 @@ public class AppTabLayout extends LinearLayout {
     private Context context;
     private GridView gridView;
     private GridAdapter gridAdapter;
-    private View vCortana;
 
 
     public AppTabLayout(Context context) {
@@ -79,18 +78,7 @@ public class AppTabLayout extends LinearLayout {
         gridView.setAdapter(gridAdapter);
         gridView.setSelector(new ColorDrawable(Color.TRANSPARENT));
         gridView.setNumColumns(MyApplication.tabApps.size()<6?MyApplication.tabApps.size():5);
-        gridView.post(new Runnable() {
-            @Override
-            public void run() {
-                for(int i=0;i<MyApplication.tabApps.size();i++){
-                    if(Constant_my.APP_PACKAGE_CORTANA.equals(MyApplication.tabApps.get(i).getPackageName())){
-                        vCortana=((ViewGroup)gridView.getChildAt(i)).getChildAt(0);
-                        gridView.post(runnable);
-                        break;
-                    }
-                }
-            }
-        });
+        gridView.post(runnable);
     }
     /**
      * 初始化监听
@@ -158,8 +146,19 @@ public class AppTabLayout extends LinearLayout {
     Runnable runnable=new Runnable() {
         @Override
         public void run() {
-          startCortanaAnim(vCortana);
+            if(getCortanaView()!=null){
+                startCortanaAnim(getCortanaView());
+            }
             gridView.postDelayed(runnable,5*60*1000);
         }
     };
+
+    private View  getCortanaView(){
+        for(int i=0;i<MyApplication.tabApps.size();i++){
+            if(Constant_my.APP_PACKAGE_CORTANA.equals(MyApplication.tabApps.get(i).getPackageName())){
+                return ((ViewGroup)gridView.getChildAt(i)).getChildAt(0);
+            }
+        }
+        return null;
+    }
 }
