@@ -228,12 +228,13 @@ public class MainActivity extends BaseActivity {
         try{
             Calendar calendar= Calendar.getInstance();
             int year=calendar.get(Calendar.YEAR);
-            int month=calendar.get(Calendar.MONTH)+1;
+            int month=calendar.get(Calendar.MONTH);
             int day=calendar.get(Calendar.DAY_OF_MONTH);
             int week=calendar.get(Calendar.DAY_OF_WEEK);
             String str_month=month>10?(month+""):("0"+month);
             String str_day=day>10?(day+""):("0"+day);
-            String date=Week.getWeek(week)+" , "+year+"-"+str_month+"-"+str_day+" , "+getTime();
+            //String date=Week.getWeek(week)+" , "+year+"-"+str_month+"-"+str_day+" , "+getTime();
+            String date=Week.getWeek(week)+" "+Month.getMonth(month)+" "+day;
             return date;
         }catch (Exception e){
             e.printStackTrace();

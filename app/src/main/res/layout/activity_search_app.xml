@@ -27,7 +27,7 @@
             android:layout_height="match_parent"
             android:background="?attr/selectableItemBackground"
             android:gravity="center_vertical"
-            android:hint="SPOTLIGHT SEARCH"
+            android:hint="SEARCH APPS"
             android:textSize="@dimen/text_size_search_bar"
             android:textColorHint="@android:color/white"
             android:textColor="@android:color/white"
