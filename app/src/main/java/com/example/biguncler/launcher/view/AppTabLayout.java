@@ -177,7 +177,11 @@ public class AppTabLayout extends LinearLayout {
     private View  getCortanaView(){
         for(int i=0;i<MyApplication.tabApps.size();i++){
             if(Constant_my.APP_PACKAGE_CORTANA.equals(MyApplication.tabApps.get(i).getPackageName())){
-                return ((ViewGroup)gridView.getChildAt(i)).getChildAt(0);
+                ViewGroup viewGroup=((ViewGroup)gridView.getChildAt(i));
+                if(viewGroup!=null){
+                    return viewGroup.getChildAt(0);
+                }
+                return null;
             }
         }
         return null;
