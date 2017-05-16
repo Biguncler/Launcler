@@ -76,11 +76,9 @@ import java.util.Date;
 public class MainActivity extends BaseActivity {
     public static final int FLAG_GESTURE_UP=1;
     public static final int FLAG_GESTURE_DOWN=2;
-    private ImageView ivBlurTab, ivBlurSearch,ivStatusBarBg;
-    private Button btSearch;
+    private ImageView ivBlurTab,ivStatusBarBg;
     private AppTabLayout layoutTab;
-    private LinearLayout layoutSearch;
-    private FrameLayout layoutBottom;
+    private TextView tvTime,tvDate;
 
 
 
@@ -115,12 +113,12 @@ public class MainActivity extends BaseActivity {
      */
     private void initView() {
         ivBlurTab = (ImageView) findViewById(R.id.view_iv_blur_tab);
-        ivBlurSearch = (ImageView) findViewById(R.id.view_iv_blur_search);
         ivStatusBarBg= (ImageView) findViewById(R.id.view_iv_status_bar);
-        btSearch = (Button) findViewById(R.id.view_bt_search);
         layoutTab = (AppTabLayout) findViewById(R.id.layout_ll_tab);
-        layoutSearch= (LinearLayout) findViewById(R.id.layout_ll_search);
-        layoutBottom= (FrameLayout) findViewById(R.id.layout_fl_bottom);
+        tvTime= (TextView) findViewById(R.id.view_tv_time);
+        tvDate= (TextView) findViewById(R.id.view_tv_date);
+        tvTime.setText(getTime());
+        tvDate.setText(getDate());
         blurBackground();
         setActivityTheme();
 
@@ -130,16 +128,6 @@ public class MainActivity extends BaseActivity {
      * 初始化监听
      */
     private void initListener() {
-        btSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // 启动百度搜索
-                boolean result = AppUtil.luanchApp(MainActivity.this, MainActivity.this.getString(R.string.baidu_search),view);
-                if (!result) {
-                    Toast.makeText(MainActivity.this, "App is not installed", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
     }
 
     /**
@@ -153,7 +141,6 @@ public class MainActivity extends BaseActivity {
                 if(MyApplication.bitmapBottom==null||MyApplication.bitmaptop==null){
                     ivBlurTab.postDelayed(this,500);
                 }else{
-                    ivBlurSearch.setImageBitmap(MyApplication.bitmaptop);
                     ivBlurTab.setImageBitmap(MyApplication.bitmapBottom);
                 }
             }
@@ -162,15 +149,13 @@ public class MainActivity extends BaseActivity {
 
     private void setActivityTheme() {
         getWindow().setBackgroundDrawable(new BitmapDrawable(WallpaperUtil.getWallpaper(this)));
-        layoutSearch.setBackgroundColor(MyApplication.tintColor);
         layoutTab.setBackgroundColor(MyApplication.tintColor);
-        btSearch.setTextColor(MyApplication.textColor);
-        btSearch.setHintTextColor(MyApplication.textColor);
         layoutTab.updateGridView();
+        tvTime.setTextColor(MyApplication.textColor);
+        tvDate.setTextColor(MyApplication.textColor);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             ivStatusBarBg.setBackgroundColor(MyApplication.statusBarBg);
         }
-        btSearch.setText(getDate());
     }
 
 
@@ -221,7 +206,8 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onTimeTick(Intent intent) {
         super.onTimeTick(intent);
-        btSearch.setText(getDate());
+        tvTime.setText(getTime());
+        tvDate.setText(getDate());
     }
 
     private String getDate(){
@@ -235,7 +221,7 @@ public class MainActivity extends BaseActivity {
             String str_day=day>10?(day+""):("0"+day);
             //String date=Week.getWeek(week)+" , "+year+"-"+str_month+"-"+str_day+" , "+getTime();
             String date=Week.getWeek(week)+" "+Month.getMonth(month)+" "+day;
-            return date;
+            return date.toUpperCase();
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -262,83 +248,16 @@ public class MainActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case FLAG_GESTURE_DOWN:
-                    exitAnimation(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            super.onAnimationEnd(animation);
-                            Intent intent=new Intent(MainActivity.this, SearchAppActivity.class);
-                            MainActivity.this.startActivityForResult(intent,FLAG_GESTURE_DOWN);
-                        }
-                    });
+                    Intent intent=new Intent(MainActivity.this, SearchAppActivity.class);
+                    MainActivity.this.startActivityForResult(intent,FLAG_GESTURE_DOWN);
                     break;
                 case FLAG_GESTURE_UP:
-                    exitAnimation(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            super.onAnimationEnd(animation);
-                            Intent intent=new Intent(MainActivity.this, AppActivity.class);
-                            MainActivity.this.startActivityForResult(intent,FLAG_GESTURE_UP);
-                        }
-                    });
+                    Intent intent2=new Intent(MainActivity.this, AppActivity.class);
+                    MainActivity.this.startActivityForResult(intent2,FLAG_GESTURE_UP);
                     break;
 
             }
         }
     };
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode==Activity.RESULT_CANCELED){
-            switch (requestCode){
-                case FLAG_GESTURE_DOWN:
-                    enterAnimation(null);
-                    break;
-                case FLAG_GESTURE_UP:
-                    enterAnimation(null);
-                    break;
-            }
-        }else{
-            btSearch.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    enterAnimation(null);
-                }
-            },280);
-        }
-    }
-
-    private void enterAnimation(AnimatorListenerAdapter listenerAdapter){
-        String animSytle=SharedPreferenceDB.get(this,SharedPreferenceDB.ANIAMTION_STYLE);
-        if(animSytle.equals(AnimationStyle.MUTED)){
-            AnimatorUtil.getInstance().startAnimator(btSearch,AnimatorUtil.ALPHA,0,1,200,null,null);
-            int startY= ScreenUtil.getScreenHeight(this);
-            int endY=ScreenUtil.getScreenHeight(this)-PixUtil.dip2px(this,85);
-            int pivotX=0;
-            int pivotY=ScreenUtil.getScreenHeight(this);
-            AnimatorUtil.getInstance().startAnimator(layoutBottom,AnimatorUtil.TRANSLATION_Y,startY,endY,pivotX,pivotY,150,null,listenerAdapter);
-        }else if(animSytle.equals(AnimationStyle.STICKY)){
-            AnimatorUtil.getInstance().startAnimator(btSearch,AnimatorUtil.ALPHA,0,1,200,null,null);
-            AnimatorUtil.getInstance().startAnimator(layoutBottom,AnimatorUtil.SCALE_Y,0,1,0,PixUtil.dip2px(this,85),150,new OvershootInterpolator(),listenerAdapter);
-        }
-    }
-
-    private void exitAnimation(AnimatorListenerAdapter listenerAdapter){
-        String animSytle=SharedPreferenceDB.get(this,SharedPreferenceDB.ANIAMTION_STYLE);
-        if(animSytle.equals(AnimationStyle.MUTED)){
-            AnimatorUtil.getInstance().startAnimator(btSearch,AnimatorUtil.ALPHA,1,0,200,null,null);
-            int endY= ScreenUtil.getScreenHeight(this);
-            int startY=ScreenUtil.getScreenHeight(this)-PixUtil.dip2px(this,85);
-            int pivotX=0;
-            int pivotY=startY;
-            AnimatorUtil.getInstance().startAnimator(layoutBottom,AnimatorUtil.TRANSLATION_Y,startY,endY,pivotX,pivotY,150,null,listenerAdapter);
-        }else if(animSytle.equals(AnimationStyle.STICKY)){
-            AnimatorUtil.getInstance().startAnimator(btSearch,AnimatorUtil.ALPHA,1,0,200,null,null);
-            AnimatorUtil.getInstance().startAnimator(layoutBottom,AnimatorUtil.SCALE_Y,1,0,0,PixUtil.dip2px(this,85),150,new AnticipateInterpolator(),listenerAdapter);
-
-        }
-
-    }
 }
 

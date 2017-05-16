@@ -12,33 +12,28 @@
     <ImageView
         android:id="@+id/view_iv_status_bar"
         android:layout_width="match_parent"
-        android:layout_height="22dp" />
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        >
-        <ImageView
-            android:id="@+id/view_iv_blur_search"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-        <LinearLayout
-            android:id="@+id/layout_ll_search"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <Button
-            android:id="@+id/view_bt_search"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:textSize="@dimen/text_size_search_bar"
-            android:hint="BAIDU SEARCH"
-            android:paddingLeft="10dp"
-            android:background="?attr/selectableItemBackground"
-            android:maxLines="1"
-                />
-        </LinearLayout>
-    </FrameLayout>
+        android:layout_height="22dp"
+        android:visibility="invisible"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="15dp">
+        <TextView
+            android:id="@+id/view_tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="50dp"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/view_tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
 
     <com.example.biguncler.launcher.view.GestureLayout
         android:layout_width="match_parent"
