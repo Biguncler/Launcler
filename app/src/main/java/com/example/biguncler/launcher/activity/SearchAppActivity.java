@@ -48,7 +48,7 @@ public class SearchAppActivity extends BaseActivity {
     private LinearLayout layoutParent;
     private GridAdapter gridAdapter;
     private AppManager appManager;
-    private LinearLayout layoutApp;
+    private LinearLayout layoutApp,layoutTop;
     private FrameLayout layoutCenter,layoutBottom;
 
 
@@ -91,6 +91,7 @@ public class SearchAppActivity extends BaseActivity {
      */
     private void initView(){
         layoutParent= (LinearLayout) findViewById(R.id.activity_search_app);
+        layoutTop= (LinearLayout) findViewById(R.id.layout_ll_top_layout);
         layoutApp= (LinearLayout) findViewById(R.id.layout_ll_app);
         layoutInput= (InputMethodLayout) findViewById(R.id.layout_ll_input_method);
         ivBlurInput=(ImageView) findViewById(R.id.view_iv_blur_input_method);
@@ -285,16 +286,19 @@ public class SearchAppActivity extends BaseActivity {
     private void enterAnimation(AnimatorListenerAdapter listenerAdapter){
         String animSytle= SharedPreferenceDB.get(this,SharedPreferenceDB.ANIAMTION_STYLE);
         if(animSytle.equals(AnimationStyle.MUTED)){
-            AnimatorUtil.getInstance().startAnimator(btText,AnimatorUtil.ALPHA,0,1,200,null,null);
-            AnimatorUtil.getInstance().startAnimator(layoutCenter,AnimatorUtil.SCALE_Y,0,1,0,0,250,null,null);
+            int startY=-PixUtil.dip2px(this,48+93+2);
+            int endY=PixUtil.dip2px(this,22);
+            int pivotX=0;
+            int pivotY=1000;
+            AnimatorUtil.getInstance().startAnimator(layoutTop,AnimatorUtil.TRANSLATION_Y,startY,endY,pivotX,pivotY,250,null,null);
+
             int startY2= ScreenUtil.getScreenHeight(this);
             int endY2=startY2-PixUtil.dip2px(this,250);
             int pivotX2=0;
             int pivotY2=ScreenUtil.getScreenHeight(this);
             AnimatorUtil.getInstance().startAnimator(layoutBottom,AnimatorUtil.TRANSLATION_Y,startY2,endY2,pivotX2,pivotY2,250,null,listenerAdapter);
         }else if(animSytle.equals(AnimationStyle.STICKY)){
-            AnimatorUtil.getInstance().startAnimator(btText,AnimatorUtil.ALPHA,0,1,200,null,null);
-            AnimatorUtil.getInstance().startAnimator(layoutCenter,AnimatorUtil.SCALE_Y,0,1,0,0,250,new OvershootInterpolator(),null);
+            AnimatorUtil.getInstance().startAnimator(layoutTop,AnimatorUtil.SCALE_Y,85f/250,1,0,0,300,new OvershootInterpolator(),null);
             AnimatorUtil.getInstance().startAnimator(layoutBottom,AnimatorUtil.SCALE_Y,85f/250,1,0,PixUtil.dip2px(this,250),300,new OvershootInterpolator(),listenerAdapter);
         }
     }
@@ -302,16 +306,19 @@ public class SearchAppActivity extends BaseActivity {
     private void exitAnimation(AnimatorListenerAdapter listenerAdapter){
         String animSytle=SharedPreferenceDB.get(this,SharedPreferenceDB.ANIAMTION_STYLE);
         if(animSytle.equals(AnimationStyle.MUTED)){
-            AnimatorUtil.getInstance().startAnimator(btText,AnimatorUtil.ALPHA,1,0,200,null,null);
-            AnimatorUtil.getInstance().startAnimator(layoutCenter,AnimatorUtil.SCALE_Y,1,0,0,0,250,null,null);
+            int startY= PixUtil.dip2px(this,22);
+            int endY=-PixUtil.dip2px(this,48+93+2);
+            int pivotX=0;
+            int pivotY=2000;
+            AnimatorUtil.getInstance().startAnimator(layoutTop,AnimatorUtil.TRANSLATION_Y,startY,endY,pivotX,pivotY,250,null,listenerAdapter);
+
             int endY2= ScreenUtil.getScreenHeight(this);
             int startY2=ScreenUtil.getScreenHeight(this)-PixUtil.dip2px(this,250);
             int pivotX2=0;
             int pivotY2=ScreenUtil.getScreenHeight(this)-PixUtil.dip2px(this,250);
             AnimatorUtil.getInstance().startAnimator(layoutBottom,AnimatorUtil.TRANSLATION_Y,startY2,endY2,pivotX2,pivotY2,250,null,listenerAdapter);
         }else if(animSytle.equals(AnimationStyle.STICKY)){
-            AnimatorUtil.getInstance().startAnimator(btText,AnimatorUtil.ALPHA,1,0,200,null,null);
-            AnimatorUtil.getInstance().startAnimator(layoutCenter,AnimatorUtil.SCALE_Y,1,0,0,0,250,new AnticipateInterpolator(),null);
+            AnimatorUtil.getInstance().startAnimator(layoutTop,AnimatorUtil.SCALE_Y,1,85f/250,0,0,300,new AnticipateInterpolator(),null);
             AnimatorUtil.getInstance().startAnimator(layoutBottom,AnimatorUtil.SCALE_Y,1,85f/250,0,PixUtil.dip2px(this,250),300,new AnticipateInterpolator(),listenerAdapter);
         }
     }
