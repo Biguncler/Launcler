@@ -51,6 +51,7 @@ import com.example.biguncler.launcher.biz.MemoryManager;
 import com.example.biguncler.launcher.biz.ScaleAnimationMap;
 import com.example.biguncler.launcher.biz.WaveHelper;
 import com.example.biguncler.launcher.db.SharedPreferenceDB;
+import com.example.biguncler.launcher.mode.AppMode;
 import com.example.biguncler.launcher.mode.Weather;
 import com.example.biguncler.launcher.util.AnimationStyle;
 import com.example.biguncler.launcher.util.AnimatorUtil;
@@ -73,6 +74,7 @@ import com.hp.hpl.sparta.Text;
 
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -131,7 +133,7 @@ public class MainActivity extends BaseActivity {
         layoutSearch= (LinearLayout) findViewById(R.id.layout_ll_search);
         layoutBottom= (FrameLayout) findViewById(R.id.layout_fl_bottom);
         gvRecentApp= (GridView) findViewById(R.id.view_gv);
-        gridAdapter = new GridAdapter(this, new AppManager().getRecetnUseApp(this));
+        gridAdapter = new GridAdapter(this, new ArrayList<AppMode>());
         gvRecentApp.setAdapter(gridAdapter);
         gvRecentApp.setSelector(new ColorDrawable(Color.TRANSPARENT));
         blurBackground();
