@@ -1,10 +1,13 @@
 package com.example.biguncler.launcher.biz;
 
+import android.app.usage.UsageStats;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.provider.Settings;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.TextUtils;
@@ -18,14 +21,8 @@ import com.example.biguncler.launcher.util.CharUtil;
 import com.example.biguncler.launcher.util.Constant_android;
 import com.example.biguncler.launcher.util.Constant_my;
 
-import org.w3c.dom.Text;
-
-import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Biguncler on 12/2/16.
@@ -202,6 +199,37 @@ public class AppManager {
 
 
         return list;
+    }
+
+    /**
+     * 获取最近使用的app
+     * @param context
+     * @return
+     */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public List<AppMode> getRecetnUseApp(Context context) {
+        List<AppMode> recentApps = new ArrayList<>();
+        List<UsageStats> usageStatses = AppUtil.getRecentUseApp(context);
+        if (usageStatses.isEmpty()) {
+            // 开启权限申请界面
+            context.startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
+            return recentApps;
+        } else {
+            for (UsageStats usageStats : usageStatses) {
+                // lastTImeUsed=0为用户不能点击的系统应用，
+                if (usageStats.getLastTimeUsed() == 0) continue;
+                // launcher 不显示
+                if(usageStats.getPackageName().equals("com.example.biguncler.launcher")) continue;
+                // 只显示前8个
+                if(recentApps.size()==8) break;
+                for (AppMode appMode : MyApplication.apps) {
+                    if (usageStats.getPackageName().equals(appMode.getPackageName())) {
+                        recentApps.add(appMode);
+                    }
+                }
+            }
+            return recentApps;
+        }
     }
 
 }

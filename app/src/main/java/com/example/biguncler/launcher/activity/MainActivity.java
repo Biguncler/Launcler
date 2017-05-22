@@ -30,8 +30,10 @@ import android.view.WindowManager;
 import android.view.animation.AnticipateInterpolator;
 import android.view.animation.CycleInterpolator;
 import android.view.animation.OvershootInterpolator;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -41,7 +43,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.example.biguncler.launcher.R;
+import com.example.biguncler.launcher.adapter.GridAdapter;
 import com.example.biguncler.launcher.application.MyApplication;
+import com.example.biguncler.launcher.biz.AppManager;
 import com.example.biguncler.launcher.biz.BitmapManager;
 import com.example.biguncler.launcher.biz.MemoryManager;
 import com.example.biguncler.launcher.biz.ScaleAnimationMap;
@@ -76,11 +80,14 @@ import java.util.Date;
 public class MainActivity extends BaseActivity {
     public static final int FLAG_GESTURE_UP=1;
     public static final int FLAG_GESTURE_DOWN=2;
+    public static final int FLAG_GESTURE_LONG_PRESS=3;
     private ImageView ivBlurTab, ivBlurSearch,ivStatusBarBg;
     private Button btSearch;
     private AppTabLayout layoutTab;
     private LinearLayout layoutSearch;
     private FrameLayout layoutBottom;
+    private GridView gvRecentApp;
+    private GridAdapter gridAdapter;
 
 
 
@@ -98,6 +105,8 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        gridAdapter.setList(new AppManager().getRecetnUseApp(this));
+        gridAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -121,6 +130,10 @@ public class MainActivity extends BaseActivity {
         layoutTab = (AppTabLayout) findViewById(R.id.layout_ll_tab);
         layoutSearch= (LinearLayout) findViewById(R.id.layout_ll_search);
         layoutBottom= (FrameLayout) findViewById(R.id.layout_fl_bottom);
+        gvRecentApp= (GridView) findViewById(R.id.view_gv);
+        gridAdapter = new GridAdapter(this, new AppManager().getRecetnUseApp(this));
+        gvRecentApp.setAdapter(gridAdapter);
+        gvRecentApp.setSelector(new ColorDrawable(Color.TRANSPARENT));
         blurBackground();
         setActivityTheme();
 
@@ -137,6 +150,17 @@ public class MainActivity extends BaseActivity {
                 boolean result = AppUtil.luanchApp(MainActivity.this, MainActivity.this.getString(R.string.baidu_search),view);
                 if (!result) {
                     Toast.makeText(MainActivity.this, "App is not installed", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        gvRecentApp.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String pk = gridAdapter.getList().get(i).getPackageName();
+                boolean result = AppUtil.luanchApp(MainActivity.this, pk,view);
+                if (!result) {
+                    Toast.makeText(MainActivity.this, "启动失败", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -262,24 +286,20 @@ public class MainActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case FLAG_GESTURE_DOWN:
-                    exitAnimation(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            super.onAnimationEnd(animation);
-                            Intent intent=new Intent(MainActivity.this, SearchAppActivity.class);
-                            MainActivity.this.startActivityForResult(intent,FLAG_GESTURE_DOWN);
-                        }
-                    });
+                    exitAnimation(null);
+                    Intent intent=new Intent(MainActivity.this, SearchAppActivity.class);
+                    MainActivity.this.startActivityForResult(intent,FLAG_GESTURE_DOWN);
                     break;
                 case FLAG_GESTURE_UP:
-                    exitAnimation(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            super.onAnimationEnd(animation);
-                            Intent intent=new Intent(MainActivity.this, AppActivity.class);
-                            MainActivity.this.startActivityForResult(intent,FLAG_GESTURE_UP);
-                        }
-                    });
+                    exitAnimation(null);
+                    Intent intent2=new Intent(MainActivity.this, AppActivity.class);
+                    MainActivity.this.startActivityForResult(intent2,FLAG_GESTURE_UP);
+                    break;
+                case FLAG_GESTURE_LONG_PRESS:
+                    exitAnimation(null);
+                    Intent intent3=new Intent(MainActivity.this, SettingActivity.class);
+                    MainActivity.this.startActivityForResult(intent3,FLAG_GESTURE_LONG_PRESS);
+                    MainActivity.this.overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
                     break;
 
             }
@@ -298,6 +318,9 @@ public class MainActivity extends BaseActivity {
                 case FLAG_GESTURE_UP:
                     enterAnimation(null);
                     break;
+                case FLAG_GESTURE_LONG_PRESS:
+                    enterAnimation(null);
+                    break;
             }
         }else{
             btSearch.postDelayed(new Runnable() {
@@ -312,30 +335,23 @@ public class MainActivity extends BaseActivity {
     private void enterAnimation(AnimatorListenerAdapter listenerAdapter){
         String animSytle=SharedPreferenceDB.get(this,SharedPreferenceDB.ANIAMTION_STYLE);
         if(animSytle.equals(AnimationStyle.MUTED)){
-            AnimatorUtil.getInstance().startAnimator(btSearch,AnimatorUtil.ALPHA,0,1,200,null,null);
-            int startY= ScreenUtil.getScreenHeight(this);
-            int endY=ScreenUtil.getScreenHeight(this)-PixUtil.dip2px(this,85);
-            int pivotX=0;
-            int pivotY=ScreenUtil.getScreenHeight(this);
-            AnimatorUtil.getInstance().startAnimator(layoutBottom,AnimatorUtil.TRANSLATION_Y,startY,endY,pivotX,pivotY,150,null,listenerAdapter);
+            AnimatorUtil.getInstance().startAnimator(gvRecentApp,AnimatorUtil.ALPHA,0,1,400,null,null);
+            AnimatorUtil.getInstance().startAnimator(btSearch,AnimatorUtil.ALPHA,0,1,200,null,listenerAdapter);
         }else if(animSytle.equals(AnimationStyle.STICKY)){
-            AnimatorUtil.getInstance().startAnimator(btSearch,AnimatorUtil.ALPHA,0,1,200,null,null);
-            AnimatorUtil.getInstance().startAnimator(layoutBottom,AnimatorUtil.SCALE_Y,0,1,0,PixUtil.dip2px(this,85),150,new OvershootInterpolator(),listenerAdapter);
+            AnimatorUtil.getInstance().startAnimator(gvRecentApp,AnimatorUtil.ALPHA,0,1,400,null,null);
+            AnimatorUtil.getInstance().startAnimator(btSearch,AnimatorUtil.ALPHA,0,1,200,null,listenerAdapter);
         }
     }
 
     private void exitAnimation(AnimatorListenerAdapter listenerAdapter){
         String animSytle=SharedPreferenceDB.get(this,SharedPreferenceDB.ANIAMTION_STYLE);
         if(animSytle.equals(AnimationStyle.MUTED)){
-            AnimatorUtil.getInstance().startAnimator(btSearch,AnimatorUtil.ALPHA,1,0,200,null,null);
-            int endY= ScreenUtil.getScreenHeight(this);
-            int startY=ScreenUtil.getScreenHeight(this)-PixUtil.dip2px(this,85);
-            int pivotX=0;
-            int pivotY=startY;
-            AnimatorUtil.getInstance().startAnimator(layoutBottom,AnimatorUtil.TRANSLATION_Y,startY,endY,pivotX,pivotY,150,null,listenerAdapter);
+            AnimatorUtil.getInstance().startAnimator(gvRecentApp,AnimatorUtil.ALPHA,1,0,400,null,null);
+            AnimatorUtil.getInstance().startAnimator(btSearch,AnimatorUtil.ALPHA,1,0,200,null,listenerAdapter);
         }else if(animSytle.equals(AnimationStyle.STICKY)){
-            AnimatorUtil.getInstance().startAnimator(btSearch,AnimatorUtil.ALPHA,1,0,200,null,null);
-            AnimatorUtil.getInstance().startAnimator(layoutBottom,AnimatorUtil.SCALE_Y,1,0,0,PixUtil.dip2px(this,85),150,new AnticipateInterpolator(),listenerAdapter);
+            AnimatorUtil.getInstance().startAnimator(gvRecentApp,AnimatorUtil.ALPHA,1,0,400,null,null);
+            AnimatorUtil.getInstance().startAnimator(btSearch,AnimatorUtil.ALPHA,1,0,200,null,listenerAdapter);
+
 
         }
 

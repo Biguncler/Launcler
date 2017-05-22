@@ -1,19 +1,16 @@
 package com.example.biguncler.launcher.util;
 
 import android.app.ActivityOptions;
+import android.app.usage.UsageStats;
+import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.text.TextUtils;
 import android.view.View;
 
-
-import com.example.biguncler.launcher.mode.AppMode;
-
-import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -23,8 +20,23 @@ import java.util.List;
  */
 
 public class AppUtil {
+    /**
+     * 获取最近使用的app
+     * @param context
+     * @return
+     */
+    public static List<UsageStats> getRecentUseApp(Context context) {
+        List<UsageStats> usageStatses = null;
+        Calendar calendar = Calendar.getInstance();
+        long endTime = calendar.getTimeInMillis();
+        calendar.add(Calendar.HOUR, -1);
+        long startTime = calendar.getTimeInMillis();
 
-
+        UsageStatsManager usageStatsManager = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
+        usageStatses = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, startTime, endTime);
+        Collections.sort(usageStatses,new UsedTimeComparator());
+        return usageStatses;
+    }
 
     /**
      * 获取安装在手机中具有launcher的app

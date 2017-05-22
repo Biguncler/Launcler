@@ -49,7 +49,11 @@ public class GestureLayout extends LinearLayout {
         init(context);
     }
 
-
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        gestureDetector.onTouchEvent(ev);
+        return super.dispatchTouchEvent(ev);
+    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -63,7 +67,7 @@ public class GestureLayout extends LinearLayout {
             case MotionEvent.ACTION_POINTER_2_UP:
                 break;
         }
-        gestureDetector.onTouchEvent(event);
+        //gestureDetector.onTouchEvent(event);
         return true;
     }
 
@@ -199,13 +203,8 @@ public class GestureLayout extends LinearLayout {
         }
 
         private void doLongPress(){
-            Intent intent=new Intent(context, SettingActivity.class);
-            context.startActivity(intent);
-            ((Activity)context).overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
             startVibrate();
-
-
-
+            ((MainActivity)context).getHandler().sendEmptyMessage(MainActivity.FLAG_GESTURE_LONG_PRESS);
         }
 
 
