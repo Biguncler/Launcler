@@ -220,8 +220,8 @@ public class AppManager {
                 if (usageStats.getLastTimeUsed() == 0) continue;
                 // launcher 不显示
                 if(usageStats.getPackageName().equals("com.example.biguncler.launcher")) continue;
-                // 只显示前8个
-                if(recentApps.size()==8) break;
+                // 只显示前9个
+                if(recentApps.size()==9) break;
                 for (AppMode appMode : MyApplication.apps) {
                     if (usageStats.getPackageName().equals(appMode.getPackageName())) {
                         recentApps.add(appMode);

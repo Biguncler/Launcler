@@ -20,6 +20,7 @@ import android.os.Message;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -107,8 +108,14 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        gridAdapter.setList(new AppManager().getRecetnUseApp(this));
-        gridAdapter.notifyDataSetChanged();
+        String isShowRecentApp=SharedPreferenceDB.get(this,SharedPreferenceDB.RECENT_APP);
+        if(TextUtils.isEmpty(isShowRecentApp)||!Boolean.valueOf(isShowRecentApp)){
+            gvRecentApp.setVisibility(View.GONE);
+        }else{
+            gvRecentApp.setVisibility(View.VISIBLE);
+            gridAdapter.setList(new AppManager().getRecetnUseApp(this));
+            gridAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -164,6 +171,12 @@ public class MainActivity extends BaseActivity {
                 if (!result) {
                     Toast.makeText(MainActivity.this, "启动失败", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+        gvRecentApp.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                return true;
             }
         });
     }

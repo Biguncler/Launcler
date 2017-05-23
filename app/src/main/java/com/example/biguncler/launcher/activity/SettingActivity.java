@@ -10,9 +10,11 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.example.biguncler.launcher.R;
@@ -31,6 +33,7 @@ public class SettingActivity extends BaseActivity {
     private RadioGroup rgBgStyle,rgShowApps;
     private TextView tvBgStyle,tvShowApps;
     private Button btBgSytleBlure,btBgSytleTint, btShowApps,btUnshowApps;
+    private Switch recentAppSwitch;
 
 
 
@@ -77,6 +80,15 @@ public class SettingActivity extends BaseActivity {
             SharedPreferenceDB.save(this,SharedPreferenceDB.ANIAMTION_STYLE,AnimationStyle.MUTED);
             rgShowApps.check(R.id.view_bt_show_app_true);
         }
+
+        recentAppSwitch= (Switch) findViewById(R.id.view_switch_recent_app);
+        String status=SharedPreferenceDB.get(this,SharedPreferenceDB.RECENT_APP);
+        if(TextUtils.isEmpty(status)||!Boolean.valueOf(status)){
+            recentAppSwitch.setChecked(false);
+        }else{
+            recentAppSwitch.setChecked(true);
+        }
+
     }
 
 
@@ -121,6 +133,13 @@ public class SettingActivity extends BaseActivity {
                         break;
 
                 }
+            }
+        });
+
+        recentAppSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                SharedPreferenceDB.save(SettingActivity.this, SharedPreferenceDB.RECENT_APP,String.valueOf(b));
             }
         });
     }
@@ -177,6 +196,8 @@ public class SettingActivity extends BaseActivity {
         tvShowApps.setTextColor(MyApplication.textColor);
         btShowApps.setTextColor(MyApplication.textColor);
         btUnshowApps.setTextColor(MyApplication.textColor);
+
+        recentAppSwitch.setTextColor(MyApplication.textColor);
 
     }
 

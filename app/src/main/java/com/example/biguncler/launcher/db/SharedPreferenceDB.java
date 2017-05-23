@@ -16,6 +16,7 @@ public class SharedPreferenceDB {
     public static final String ANIAMTION_STYLE="ANIAMTION_STYLE";
     public static final String SHOW_BATTERY_LEVEL="SHOW_BATTERY_LEVEL";
     public static final String LAUNCHER_LOOCK_SCREEN="LAUNCHER_LOOCK_SCREEN";
+    public static final String RECENT_APP="RECENT_APP";
 
 
 
