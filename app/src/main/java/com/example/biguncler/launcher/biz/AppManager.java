@@ -221,7 +221,7 @@ public class AppManager {
                 // launcher 不显示
                 if(usageStats.getPackageName().equals("com.example.biguncler.launcher")) continue;
                 // 只显示前9个
-                if(recentApps.size()==9) break;
+                if(recentApps.size()>=9) break;
                 for (AppMode appMode : MyApplication.apps) {
                     if (usageStats.getPackageName().equals(appMode.getPackageName())) {
                         recentApps.add(appMode);
