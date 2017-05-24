@@ -133,11 +133,11 @@ public class BaseActivity extends Activity {
         intentFilter.addAction(ACTION_APP_UNINSTALLED);
         intentFilter.addAction(ACTION_WALLPEPER_UPDATED);
         intentFilter.addAction(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
-        intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
-        intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
-        intentFilter.addAction(Intent.ACTION_DATE_CHANGED);
-        intentFilter.addAction(Intent.ACTION_TIME_TICK);
-        intentFilter.addAction(ACTION_ADD_SHORTCUT);
+        //intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
+        //intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
+        //intentFilter.addAction(Intent.ACTION_DATE_CHANGED);
+        //intentFilter.addAction(Intent.ACTION_TIME_TICK);
+        //intentFilter.addAction(ACTION_ADD_SHORTCUT);
         registerReceiver(receiver, intentFilter);
 
 

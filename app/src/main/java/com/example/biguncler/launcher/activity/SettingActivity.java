@@ -33,7 +33,6 @@ public class SettingActivity extends BaseActivity {
     private RadioGroup rgBgStyle,rgShowApps;
     private TextView tvBgStyle,tvShowApps;
     private Button btBgSytleBlure,btBgSytleTint, btShowApps,btUnshowApps;
-    private Switch recentAppSwitch;
 
 
 
@@ -79,14 +78,6 @@ public class SettingActivity extends BaseActivity {
         }else{
             SharedPreferenceDB.save(this,SharedPreferenceDB.ANIAMTION_STYLE,AnimationStyle.MUTED);
             rgShowApps.check(R.id.view_bt_show_app_true);
-        }
-
-        recentAppSwitch= (Switch) findViewById(R.id.view_switch_recent_app);
-        String status=SharedPreferenceDB.get(this,SharedPreferenceDB.RECENT_APP);
-        if(TextUtils.isEmpty(status)||!Boolean.valueOf(status)){
-            recentAppSwitch.setChecked(false);
-        }else{
-            recentAppSwitch.setChecked(true);
         }
 
     }
@@ -136,12 +127,6 @@ public class SettingActivity extends BaseActivity {
             }
         });
 
-        recentAppSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                SharedPreferenceDB.save(SettingActivity.this, SharedPreferenceDB.RECENT_APP,String.valueOf(b));
-            }
-        });
     }
 
 
@@ -196,9 +181,6 @@ public class SettingActivity extends BaseActivity {
         tvShowApps.setTextColor(MyApplication.textColor);
         btShowApps.setTextColor(MyApplication.textColor);
         btUnshowApps.setTextColor(MyApplication.textColor);
-
-        recentAppSwitch.setTextColor(MyApplication.textColor);
-
     }
 
     @Override

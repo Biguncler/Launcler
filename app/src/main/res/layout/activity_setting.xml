@@ -110,17 +110,6 @@
 
                     </RadioGroup>
                 </LinearLayout>
-                <Switch
-                    android:id="@+id/view_switch_recent_app"
-                    android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:textSize="20sp"
-                    android:text="SHOW RECENT APPS"
-
-                    />
-
             </LinearLayout>
             </ScrollView>
         </LinearLayout>

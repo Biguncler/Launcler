@@ -88,9 +88,6 @@ public class MainActivity extends BaseActivity {
     private Button btSearch;
     private AppTabLayout layoutTab;
     private LinearLayout layoutSearch;
-    private FrameLayout layoutBottom;
-    private GridView gvRecentApp;
-    private GridAdapter gridAdapter;
 
 
 
@@ -108,14 +105,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        String isShowRecentApp=SharedPreferenceDB.get(this,SharedPreferenceDB.RECENT_APP);
-        if(TextUtils.isEmpty(isShowRecentApp)||!Boolean.valueOf(isShowRecentApp)){
-            gvRecentApp.setVisibility(View.GONE);
-        }else{
-            gvRecentApp.setVisibility(View.VISIBLE);
-            gridAdapter.setList(new AppManager().getRecetnUseApp(this));
-            gridAdapter.notifyDataSetChanged();
-        }
     }
 
     @Override
@@ -138,11 +127,6 @@ public class MainActivity extends BaseActivity {
         btSearch = (Button) findViewById(R.id.view_bt_search);
         layoutTab = (AppTabLayout) findViewById(R.id.layout_ll_tab);
         layoutSearch= (LinearLayout) findViewById(R.id.layout_ll_search);
-        layoutBottom= (FrameLayout) findViewById(R.id.layout_fl_bottom);
-        gvRecentApp= (GridView) findViewById(R.id.view_gv);
-        gridAdapter = new GridAdapter(this, new ArrayList<AppMode>());
-        gvRecentApp.setAdapter(gridAdapter);
-        gvRecentApp.setSelector(new ColorDrawable(Color.TRANSPARENT));
         blurBackground();
         setActivityTheme();
 
@@ -160,23 +144,6 @@ public class MainActivity extends BaseActivity {
                 if (!result) {
                     Toast.makeText(MainActivity.this, "App is not installed", Toast.LENGTH_SHORT).show();
                 }
-            }
-        });
-
-        gvRecentApp.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String pk = gridAdapter.getList().get(i).getPackageName();
-                boolean result = AppUtil.luanchApp(MainActivity.this, pk,view);
-                if (!result) {
-                    Toast.makeText(MainActivity.this, "启动失败", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        gvRecentApp.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                return true;
             }
         });
     }
@@ -209,7 +176,6 @@ public class MainActivity extends BaseActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             ivStatusBarBg.setBackgroundColor(MyApplication.statusBarBg);
         }
-        btSearch.setText(getDate());
     }
 
 
@@ -260,7 +226,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onTimeTick(Intent intent) {
         super.onTimeTick(intent);
-        btSearch.setText(getDate());
     }
 
     private String getDate(){
@@ -350,10 +315,8 @@ public class MainActivity extends BaseActivity {
     private void enterAnimation(AnimatorListenerAdapter listenerAdapter){
         String animSytle=SharedPreferenceDB.get(this,SharedPreferenceDB.ANIAMTION_STYLE);
         if(animSytle.equals(AnimationStyle.MUTED)){
-            AnimatorUtil.getInstance().startAnimator(gvRecentApp,AnimatorUtil.ALPHA,0,1,400,null,null);
             AnimatorUtil.getInstance().startAnimator(btSearch,AnimatorUtil.ALPHA,0,1,200,null,listenerAdapter);
         }else if(animSytle.equals(AnimationStyle.STICKY)){
-            AnimatorUtil.getInstance().startAnimator(gvRecentApp,AnimatorUtil.ALPHA,0,1,400,null,null);
             AnimatorUtil.getInstance().startAnimator(btSearch,AnimatorUtil.ALPHA,0,1,200,null,listenerAdapter);
         }
     }
@@ -361,10 +324,8 @@ public class MainActivity extends BaseActivity {
     private void exitAnimation(AnimatorListenerAdapter listenerAdapter){
         String animSytle=SharedPreferenceDB.get(this,SharedPreferenceDB.ANIAMTION_STYLE);
         if(animSytle.equals(AnimationStyle.MUTED)){
-            AnimatorUtil.getInstance().startAnimator(gvRecentApp,AnimatorUtil.ALPHA,1,0,400,null,null);
             AnimatorUtil.getInstance().startAnimator(btSearch,AnimatorUtil.ALPHA,1,0,200,null,listenerAdapter);
         }else if(animSytle.equals(AnimationStyle.STICKY)){
-            AnimatorUtil.getInstance().startAnimator(gvRecentApp,AnimatorUtil.ALPHA,1,0,400,null,null);
             AnimatorUtil.getInstance().startAnimator(btSearch,AnimatorUtil.ALPHA,1,0,200,null,listenerAdapter);
 
 
