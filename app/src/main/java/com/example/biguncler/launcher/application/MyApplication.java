@@ -10,25 +10,17 @@ import android.graphics.Color;
 import android.support.v7.graphics.Palette;
 import android.text.TextUtils;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.example.biguncler.launcher.R;
 import com.example.biguncler.launcher.activity.BaseActivity;
 import com.example.biguncler.launcher.biz.AppManager;
 import com.example.biguncler.launcher.biz.BitmapManager;
-import com.example.biguncler.launcher.biz.ScaleAnimationMap;
 import com.example.biguncler.launcher.db.SharedPreferenceDB;
 import com.example.biguncler.launcher.mode.AppMode;
 import com.example.biguncler.launcher.util.AnimationStyle;
 import com.example.biguncler.launcher.util.BgStyle;
 import com.example.biguncler.launcher.util.BitmapUtil;
-import com.example.biguncler.launcher.util.FastBlur;
 import com.example.biguncler.launcher.util.WallpaperUtil;
 
-import org.w3c.dom.Text;
-
-import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -224,39 +216,16 @@ public class MyApplication extends Application {
      * @param bitmap
      */
     public void getBlurBitmap(final Bitmap bitmap) {
-        if (bitmap == null) {
-            return;
-        } else {
-            ByteArrayOutputStream output = new ByteArrayOutputStream();//初始化一个流对象
-            bitmap.compress(Bitmap.CompressFormat.PNG, 10, output);//把bitmap100%高质量压缩 到 output对象里
-            byte[] result = output.toByteArray();//转换成功了
-            Glide.with(MyApplication.this).load(result).asBitmap()
-                    .transform(new FastBlur(MyApplication.this, 300))
-                    .into(new SimpleTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                            if (resource == null) return;
-                            new Thread(){
-                                @Override
-                                public void run() {
-                                    BitmapManager manager = new BitmapManager(MyApplication.this);
-                                    bitmapLockScreen=resource;
-                                    MyApplication.bitmaptop = manager.getSearchCropBitmap(resource);
-                                    MyApplication.bitmapCentersearch = manager.getCenterLittleCropBitmap(resource);
-                                    MyApplication.bitmapCenterInput = manager.getInputMethodCropBitmap(resource);
-                                    MyApplication.bitmapCenterApp = manager.getCenterCropBitmap(resource);
-                                    MyApplication.bitmapBottom = manager.getTabCropBitmap(resource);
-                                    MyApplication.bitmapSetting = manager.getSettingCropBitmap(resource);
-                                }
-                            }.start();
-                        }
-                    });
-            try {
-                output.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        Bitmap resource = BitmapUtil.getBlurBitmap(WallpaperUtil.getWallpaper(MyApplication.this), 200, false);
+        BitmapManager manager = new BitmapManager(MyApplication.this);
+        bitmapLockScreen = resource;
+        MyApplication.bitmaptop = manager.getSearchCropBitmap(resource);
+        MyApplication.bitmapCentersearch = manager.getCenterLittleCropBitmap(resource);
+        MyApplication.bitmapCenterInput = manager.getInputMethodCropBitmap(resource);
+        MyApplication.bitmapCenterApp = manager.getCenterCropBitmap(resource);
+        MyApplication.bitmapBottom = manager.getTabCropBitmap(resource);
+        MyApplication.bitmapSetting = manager.getSettingCropBitmap(resource);
+
     }
 
 

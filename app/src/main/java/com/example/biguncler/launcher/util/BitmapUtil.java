@@ -3,6 +3,8 @@ package com.example.biguncler.launcher.util;
 import android.graphics.Bitmap;
 import android.os.Environment;
 
+import net.qiujuer.genius.blur.StackBlur;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -249,7 +251,12 @@ public class BitmapUtil {
     }
 
 
-
+    public static Bitmap getBlurBitmap(Bitmap bitmap ,int radius,boolean canReuseInBitmap){
+        //StackBlur.blur() 此方法为Java代码  28ms 模糊速度
+        //StackBlur.blurNatively()         9ms
+        // StackBlur.blurNativelyPixels()  3ms
+        return StackBlur.blurNativelyPixels(bitmap,radius,canReuseInBitmap);
+    }
 
 
 
