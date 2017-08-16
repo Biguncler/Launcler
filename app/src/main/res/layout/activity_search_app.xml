@@ -71,7 +71,7 @@
     <FrameLayout
         android:id="@+id/layout_fl_search_app_bottom"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="200dp"
         >
         <ImageView
             android:id="@+id/view_iv_blur_input_method"

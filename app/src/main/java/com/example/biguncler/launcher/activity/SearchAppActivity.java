@@ -288,14 +288,14 @@ public class SearchAppActivity extends BaseActivity {
             AnimatorUtil.getInstance().startAnimator(btText,AnimatorUtil.ALPHA,0,1,200,null,null);
             AnimatorUtil.getInstance().startAnimator(layoutCenter,AnimatorUtil.SCALE_Y,0,1,0,0,250,null,null);
             int startY2= ScreenUtil.getScreenHeight(this);
-            int endY2=startY2-PixUtil.dip2px(this,250);
+            int endY2=startY2-PixUtil.dip2px(this,200);
             int pivotX2=0;
             int pivotY2=ScreenUtil.getScreenHeight(this);
             AnimatorUtil.getInstance().startAnimator(layoutBottom,AnimatorUtil.TRANSLATION_Y,startY2,endY2,pivotX2,pivotY2,250,null,listenerAdapter);
         }else if(animSytle.equals(AnimationStyle.STICKY)){
             AnimatorUtil.getInstance().startAnimator(btText,AnimatorUtil.ALPHA,0,1,200,null,null);
             AnimatorUtil.getInstance().startAnimator(layoutCenter,AnimatorUtil.SCALE_Y,0,1,0,0,250,new OvershootInterpolator(),null);
-            AnimatorUtil.getInstance().startAnimator(layoutBottom,AnimatorUtil.SCALE_Y,85f/250,1,0,PixUtil.dip2px(this,250),300,new OvershootInterpolator(),listenerAdapter);
+            AnimatorUtil.getInstance().startAnimator(layoutBottom,AnimatorUtil.SCALE_Y,85f/200,1,0,PixUtil.dip2px(this,200),300,new OvershootInterpolator(),listenerAdapter);
         }
     }
 
@@ -305,14 +305,14 @@ public class SearchAppActivity extends BaseActivity {
             AnimatorUtil.getInstance().startAnimator(btText,AnimatorUtil.ALPHA,1,0,200,null,null);
             AnimatorUtil.getInstance().startAnimator(layoutCenter,AnimatorUtil.SCALE_Y,1,0,0,0,250,null,null);
             int endY2= ScreenUtil.getScreenHeight(this);
-            int startY2=ScreenUtil.getScreenHeight(this)-PixUtil.dip2px(this,250);
+            int startY2=ScreenUtil.getScreenHeight(this)-PixUtil.dip2px(this,200);
             int pivotX2=0;
-            int pivotY2=ScreenUtil.getScreenHeight(this)-PixUtil.dip2px(this,250);
+            int pivotY2=ScreenUtil.getScreenHeight(this)-PixUtil.dip2px(this,200);
             AnimatorUtil.getInstance().startAnimator(layoutBottom,AnimatorUtil.TRANSLATION_Y,startY2,endY2,pivotX2,pivotY2,250,null,listenerAdapter);
         }else if(animSytle.equals(AnimationStyle.STICKY)){
             AnimatorUtil.getInstance().startAnimator(btText,AnimatorUtil.ALPHA,1,0,200,null,null);
             AnimatorUtil.getInstance().startAnimator(layoutCenter,AnimatorUtil.SCALE_Y,1,0,0,0,250,new AnticipateInterpolator(),null);
-            AnimatorUtil.getInstance().startAnimator(layoutBottom,AnimatorUtil.SCALE_Y,1,85f/250,0,PixUtil.dip2px(this,250),300,new AnticipateInterpolator(),listenerAdapter);
+            AnimatorUtil.getInstance().startAnimator(layoutBottom,AnimatorUtil.SCALE_Y,1,85f/200,0,PixUtil.dip2px(this,200),300,new AnticipateInterpolator(),listenerAdapter);
         }
     }
 }

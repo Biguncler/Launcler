@@ -116,7 +116,7 @@ public class BitmapManager {
      */
     public Bitmap getInputMethodCropBitmap(Bitmap bitmap){
         int width=ScreenUtil.getScreenWidth(context);
-        int height=PixUtil.dip2px(context,250);
+        int height=PixUtil.dip2px(context,200);
         int startX=0;
         int startY=ScreenUtil.getScreenHeight(context)-height;
         return BitmapUtil.cropBitmap(bitmap,startX,startY,width,height);
